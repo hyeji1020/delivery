@@ -13,6 +13,7 @@ public class FoodService {
     
     // 음식 목록 조회
     public List<Food> getFoods() {
+
         return mapRepository.getAll();
     }
 
@@ -23,8 +24,15 @@ public class FoodService {
 
 
     // 음식 등록
-    public void createFood(Food food) {
-        mapRepository.create(food);
+    public Food createFood(FoodDto dto) {
+        
+        //DTO->Entity
+        Food food = dto.toEntity();
+        
+        //repository에 저장
+        Food saved = mapRepository.create(food);
+
+        return saved;
     }
 
 

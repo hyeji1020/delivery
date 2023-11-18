@@ -24,8 +24,8 @@ public class FoodController {
     
     // 음식 등록
     @PostMapping("/api/foods")
-    public void createFood(Food food){
-        foodService.createFood(food);
+    public void createFood(FoodDto dto){
+        foodService.createFood(dto);
     }
 
     // 음식 수정

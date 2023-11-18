@@ -15,7 +15,9 @@ public class Food {
     @Column(name="food_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer foodId;
+    @Column
     private String foodName;
+    @Column
     private int foodPrice;
 
 
@@ -36,4 +38,6 @@ public class Food {
     public int getFoodPrice() {
         return foodPrice;
     }
+
+
 }
