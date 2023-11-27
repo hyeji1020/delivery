@@ -1,42 +1,28 @@
 package com.study.sjicnho.delivery.food;
 
-import lombok.Builder;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import com.study.sjicnho.delivery.store.Store;
+import lombok.*;
 
 import javax.persistence.*;
 
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @ToString
+@Getter
 @Entity
-@Table(name = "testfood")
+@Table(name = "food")
 public class Food {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer foodId;
-
     private String foodName;
-
     private int foodPrice;
 
-    @Builder
-    public Food(Integer foodId, String foodName, int foodPrice) {
-        this.foodId = foodId;
-        this.foodName = foodName;
-        this.foodPrice = foodPrice;
-    }
+    @ManyToOne
+    @JoinColumn(name="storeId")
+    private Store store;
 
-    public Integer getFoodId() {
-        return foodId;
-    }
-
-    public String getFoodName() {
-        return foodName;
-    }
-
-    public int getFoodPrice() {
-        return foodPrice;
-    }
 
 }

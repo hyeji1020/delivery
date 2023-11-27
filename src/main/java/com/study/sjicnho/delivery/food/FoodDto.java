@@ -4,6 +4,8 @@ import lombok.*;
 
 @ToString
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Getter
 @Setter
 public class FoodDto {
@@ -12,12 +14,6 @@ public class FoodDto {
     private String foodName;
     private int foodPrice;
 
-    @Builder
-    public FoodDto(Integer foodId, String foodName, int foodPrice) {
-        this.foodId = foodId;
-        this.foodName = foodName;
-        this.foodPrice = foodPrice;
-    }
 
     //DTO -> Entity
     public Food toEntity(){

@@ -1,17 +1,14 @@
 package com.study.sjicnho.delivery.food;
 
-import com.study.sjicnho.delivery.food.Food;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Repository
 @Slf4j
-public class MapRepository {
+public class MapRepository{
 
     private Map<Integer, Food> db;
     private Integer id;
@@ -20,8 +17,6 @@ public class MapRepository {
         this.db = new HashMap<>();
         this.id = 0;
     }
-
-
 
     public List<Food> getFoods(Food food) {
 
@@ -52,5 +47,7 @@ public class MapRepository {
     public void delete(int id) {
         db.remove(id);
     }
+
+
 
 }
