@@ -1,15 +1,15 @@
-package com.study.sjicnho.delivery.food.service;
+package com.study.sjicnho.delivery.food;
 
-import com.study.sjicnho.delivery.food.domain.Food;
-import com.study.sjicnho.delivery.food.dto.FoodDto;
-import com.study.sjicnho.delivery.food.repository.MapRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import com.study.sjicnho.delivery.food.Food;
+import com.study.sjicnho.delivery.food.FoodDto;
+import com.study.sjicnho.delivery.food.MapRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @Service
 public class FoodService {
 
@@ -22,9 +22,10 @@ public class FoodService {
     // 음식 목록 조회
     public List<FoodDto> getFoods(Food food) {
 
+        List<FoodDto> dtos = new ArrayList<FoodDto>();
+
         //전체 데이터 가져오기
         List<Food> foods = mapRepository.getFoods(food);
-        List<FoodDto> dtos = new ArrayList<FoodDto>();
 
         //Entity->DTO
         for(int i = 0; i< foods.size(); i++){
@@ -41,15 +42,10 @@ public class FoodService {
 
         //데이터 상세 조회
         Food food = mapRepository.getById(foodId);
+        log.info("food={}", food);
 
         //Entity -> DTO
-        FoodDto dto = FoodDto.createFromEntity(food);
-
-        if(food != null){
-            return dto;
-        }else{
-            return null;
-        }
+        return FoodDto.createFromEntity(food);
 
     }
 
@@ -59,6 +55,7 @@ public class FoodService {
 
         //DTO->Entity
         Food food = dto.toEntity();
+        log.info("food={}", food);
 
         //repository에 저장
         Food saved = mapRepository.create(food);
@@ -71,18 +68,20 @@ public class FoodService {
     public Food updateFood(Integer foodId, FoodDto dto) {
 
         //수정할 데이터 Entity 변환
+        dto.setFoodId(foodId);
         Food data = dto.toEntity();
+        log.info("data={}", data);
 
         //해당아이디 게시글 확인 후 수정
         Food target = mapRepository.getById(foodId);
+        log.info("target={}", target);
 
         if(target != null){
-            mapRepository.update(data);
-            return new Food(data.getFoodId(), data.getFoodName(), data.getFoodPrice());
-        } else{
-           return null;
-        }
+            mapRepository.update(foodId, target);
+        }else{
 
+        }
+        return data;
     }
 
     // 음식 삭제

@@ -1,7 +1,7 @@
-package com.study.sjicnho.delivery.food.repository;
+package com.study.sjicnho.delivery.food;
 
-import com.study.sjicnho.delivery.food.domain.Food;
-import com.study.sjicnho.delivery.food.dto.FoodDto;
+import com.study.sjicnho.delivery.food.Food;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -10,9 +10,18 @@ import java.util.List;
 import java.util.Map;
 
 @Repository
+@Slf4j
 public class MapRepository {
 
-    private Map<Integer, Food> db = new HashMap<>();
+    private Map<Integer, Food> db;
+    private Integer id;
+
+    public MapRepository() {
+        this.db = new HashMap<>();
+        this.id = 0;
+    }
+
+
 
     public List<Food> getFoods(Food food) {
 
@@ -27,15 +36,17 @@ public class MapRepository {
     }
 
     public Food create(Food food) {
-        return db.put(food.getFoodId(), food);
+        db.put(food.getFoodId(), food);
+        return food;
     }
 
     public Food getById(int id) {
         return db.get(id);
     }
 
-    public Food update(Food food) {
-       return db.put(food.getFoodId(), food);
+    public Food update(int id, Food food) {
+
+       return db.put(id, food);
     }
 
     public void delete(int id) {

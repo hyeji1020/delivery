@@ -1,13 +1,13 @@
-package com.study.sjicnho.delivery.food.controller;
+package com.study.sjicnho.delivery.food;
 
-import com.study.sjicnho.delivery.food.domain.Food;
-import com.study.sjicnho.delivery.food.dto.FoodDto;
-import com.study.sjicnho.delivery.food.service.FoodService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+@Slf4j
 @RestController
 @RequestMapping("/api/foods")
 public class FoodController {
@@ -25,9 +25,10 @@ public class FoodController {
             List<FoodDto> dtoList = foodService.getFoods(food);
 
             if (dtoList != null) {
-                return new ResponseEntity<>(dtoList, HttpStatus.OK);
+                return ResponseEntity.ok().body(dtoList);
             } else {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+
             }
         }
 
@@ -37,11 +38,12 @@ public class FoodController {
         public ResponseEntity<FoodDto> getFoodById(@PathVariable Integer foodId){
 
             FoodDto foodDto = foodService.getFoodById(foodId);
+            log.info("foodDto={}", foodDto);
 
             if (foodDto != null) {
-                return new ResponseEntity<>(foodDto, HttpStatus.OK);
+                return ResponseEntity.ok(foodDto);
             } else {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                return ResponseEntity.notFound().build();
             }
 
         }
@@ -49,20 +51,19 @@ public class FoodController {
         //음식 등록
         @PostMapping
         public ResponseEntity<Food> createFood(@RequestBody FoodDto foodDto){
-            Food createdFood = foodService.createFood(foodDto);
-            return new ResponseEntity<>(createdFood, HttpStatus.CREATED);
+            Food food = foodService.createFood(foodDto);
+
+            return ResponseEntity.ok(food);
         }
 
         //음식 수정
         @PutMapping("/{foodId}")
         public ResponseEntity<Food> updateFood(@PathVariable Integer foodId, @RequestBody FoodDto foodDto){
+
             Food updated = foodService.updateFood(foodId, foodDto);
 
-            if (updated != null) {
-                return new ResponseEntity<>(updated, HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
+            return ResponseEntity.ok(updated);
+
         }
 
         //음식 삭제

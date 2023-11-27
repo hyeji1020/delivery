@@ -1,24 +1,23 @@
-package com.study.sjicnho.delivery.food.domain;
+package com.study.sjicnho.delivery.food;
 
-import com.study.sjicnho.delivery.food.dto.FoodDto;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 
 @NoArgsConstructor
-
+@ToString
 @Entity
-@Table(name = "food")
+@Table(name = "testfood")
 public class Food {
 
     @Id
-    @Column(name="food_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer foodId;
-    @Column
+
     private String foodName;
-    @Column
+
     private int foodPrice;
 
     @Builder

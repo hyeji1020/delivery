@@ -1,12 +1,11 @@
-package com.study.sjicnho.delivery.food.dto;
+package com.study.sjicnho.delivery.food;
 
-import com.study.sjicnho.delivery.food.domain.Food;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
+@ToString
 @NoArgsConstructor
 @Getter
+@Setter
 public class FoodDto {
 
     private Integer foodId;
