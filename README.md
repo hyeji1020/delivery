@@ -38,7 +38,7 @@
 
 ------------
 ### DB 테이블 설계
-![image](https://github.com/hyeji1020/delivery/assets/148170765/d96fb7dd-adf8-45ca-912f-343c206370cc)
+![배달테이블](https://github.com/hyeji1020/delivery/assets/148170765/f46d4f36-d611-479b-bbdd-cc2fd4bbbe8f)
 
 
 
