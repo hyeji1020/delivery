@@ -1,7 +1,6 @@
 package com.study.sjicnho.delivery.user;
 
-import com.study.sjicnho.delivery.order.Order;
-import com.study.sjicnho.delivery.order.OrderDto;
+
 import lombok.*;
 
 import javax.jws.soap.SOAPBinding;
