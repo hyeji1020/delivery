@@ -21,6 +21,7 @@ public class UserDto {
     private String email;
     private String password;
     private String grade;
+    private RoleType roleType;
 
 
     //DTO -> Entity
@@ -31,7 +32,7 @@ public class UserDto {
                 .name(name)
                 .email(email)
                 .password(password)
-                .grade(grade)
+                .roleType(roleType)
                 .build();
     }
 
@@ -43,7 +44,7 @@ public class UserDto {
                 .name(user.getName())
                 .email(user.getEmail())
                 .password(user.getPassword())
-                .grade(user.getGrade())
+                .roleType(user.getRoleType())
                 .build();
     }
 }

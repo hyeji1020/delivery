@@ -1,14 +1,12 @@
 package com.study.sjicnho.delivery.order;
 
 
-import com.study.sjicnho.delivery.food.Food;
-import com.study.sjicnho.delivery.food.FoodDto;
-import com.study.sjicnho.delivery.payment.PaymentOption;
 import com.study.sjicnho.delivery.store.Store;
+import com.study.sjicnho.delivery.payment.PaymentOption;
+
 import com.study.sjicnho.delivery.user.User;
 import lombok.*;
 
-import javax.persistence.NamedEntityGraph;
 import java.util.Date;
 
 @Getter
@@ -21,7 +19,7 @@ public class OrderDto {
     private User user;
     private Store store;
     private int paymentAmount;
-    private PaymentOption option;
+    private PaymentOption paymentOption;
     private OrderStatus status;
     private String deliveryAddress;
     private Date orderDate;
@@ -34,7 +32,7 @@ public class OrderDto {
                 .user(user)
                 .store(store)
                 .paymentAmount(paymentAmount)
-                .option(option)
+                .paymentOption(paymentOption)
                 .status(status)
                 .deliveryAddress(deliveryAddress)
                 .orderDate(orderDate)
@@ -48,7 +46,7 @@ public class OrderDto {
                 .user(order.getUser())
                 .store(order.getStore())
                 .paymentAmount(order.getPaymentAmount())
-                .option(order.getOption())
+                .paymentOption(order.getPaymentOption())
                 .status(order.getStatus())
                 .deliveryAddress(order.getDeliveryAddress())
                 .orderDate(order.getOrderDate())

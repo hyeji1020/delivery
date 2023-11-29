@@ -9,15 +9,9 @@ import lombok.NoArgsConstructor;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
-@Entity(name="payment_option")
-@Getter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-public class PaymentOption {
 
-    @Id
-    private Integer optionId;
-    private String option;
+public enum PaymentOption {
+    //현금, 카드
+    CASH, CARD
 
 }

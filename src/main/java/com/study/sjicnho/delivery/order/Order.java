@@ -1,7 +1,7 @@
 package com.study.sjicnho.delivery.order;
 
-import com.study.sjicnho.delivery.payment.PaymentOption;
 import com.study.sjicnho.delivery.store.Store;
+import com.study.sjicnho.delivery.payment.PaymentOption;
 import com.study.sjicnho.delivery.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.persistence.criteria.CriteriaBuilder;
 import java.util.Date;
 
 @Entity
@@ -25,24 +24,24 @@ public class Order {
     private Integer orderId;
 
     @ManyToOne
-    @JoinColumn(name="userId")
+    @JoinColumn(name="user_id")
     private User user;
 
     @ManyToOne
-    @JoinColumn(name="storeId")
+    @JoinColumn(name="store_id")
     private Store store;
 
     private int paymentAmount;
 
-    @ManyToOne
-    @JoinColumn(name="optionId")
-    private PaymentOption option;
+    @Enumerated(EnumType.STRING)
+    private PaymentOption paymentOption;
 
-    @ManyToOne
-    @JoinColumn(name="statusId")
+    @Enumerated(EnumType.STRING)
     private OrderStatus status;
+
     private String deliveryAddress;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date orderDate;
+
 }
