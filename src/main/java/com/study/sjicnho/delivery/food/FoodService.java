@@ -16,6 +16,12 @@ public class FoodService {
         this.mapRepository = mapRepository;
     }
 
+//    private final FoodJpaRepository foodJpaRepository;
+//
+//    public FoodService(FoodJpaRepository foodJpaRepository){
+//        this.foodJpaRepository = foodJpaRepository;
+//    }
+
     // 음식 목록 조회
     public List<FoodDto> getFoods(Food food) {
 

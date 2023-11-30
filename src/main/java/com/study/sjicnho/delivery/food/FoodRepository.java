@@ -3,7 +3,7 @@ package com.study.sjicnho.delivery.food;
 
 import java.util.List;
 import java.util.Optional;
-
+//하위인터페이스
 public interface FoodRepository extends FoodJpaRepository{
 
 //    @Override
