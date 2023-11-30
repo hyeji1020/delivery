@@ -7,8 +7,13 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 @Entity
@@ -17,6 +22,7 @@ import java.util.Date;
 @AllArgsConstructor
 @Builder
 @NoArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 public class Order {
 
     @Id
@@ -41,7 +47,17 @@ public class Order {
 
     private String deliveryAddress;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date orderDate;
+//    @Temporal(TemporalType.DATE)
+    @CreatedDate
+    private String orderDate;
+
+    @PrePersist
+    public void onPrePersist(){
+        String orderFormatDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+        this.orderDate = orderFormatDate;
+    }
+
+
+
 
 }

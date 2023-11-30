@@ -7,6 +7,7 @@ import com.study.sjicnho.delivery.payment.PaymentOption;
 import com.study.sjicnho.delivery.user.User;
 import lombok.*;
 
+import javax.jws.soap.SOAPBinding;
 import java.util.Date;
 
 @Getter
@@ -22,7 +23,14 @@ public class OrderDto {
     private PaymentOption paymentOption;
     private OrderStatus status;
     private String deliveryAddress;
-    private Date orderDate;
+    private String orderDate;
+
+    public User usermake(){
+        Integer id = user.getUserId();
+        return User.builder()
+                .userId(id)
+                .build();
+    }
 
 
     //DTO -> Entity
