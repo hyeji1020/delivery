@@ -5,9 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-//상위인터페이스
 @Repository
-public interface FoodJpaRepository extends JpaRepository<Food, Integer> {
-
+public interface FoodJpaRepository extends JpaRepository<Food, Integer>{
 
 }

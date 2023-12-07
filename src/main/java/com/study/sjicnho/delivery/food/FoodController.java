@@ -37,7 +37,7 @@ public class FoodController {
         @GetMapping("/{foodId}")
         public ResponseEntity<FoodDto> getFoodById(@PathVariable Integer foodId){
 
-            FoodDto foodDto = foodService.getFoodById(foodId);
+            FoodDto foodDto = foodService.findById(foodId);
             log.info("foodDto={}", foodDto);
 
             if (foodDto != null) {
@@ -51,7 +51,7 @@ public class FoodController {
         //음식 등록
         @PostMapping
         public ResponseEntity<Food> createFood(@RequestBody FoodDto foodDto){
-            Food food = foodService.createFood(foodDto);
+            Food food = foodService.save(foodDto);
 
             return ResponseEntity.ok(food);
         }
@@ -68,17 +68,12 @@ public class FoodController {
 
         //음식 삭제
         @DeleteMapping("/{foodId}")
-        public ResponseEntity<Void> deleteFood(@PathVariable Integer foodId){
+        public ResponseEntity<Void> deleteFood(@PathVariable Integer foodId) {
 
-            boolean deleted = foodService.deleteFood(foodId);
+            foodService.deleteFood(foodId);
 
-            if (deleted) {
-                return new ResponseEntity<>(HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
+            return new ResponseEntity<>(HttpStatus.OK);
         }
-
     }
 
 

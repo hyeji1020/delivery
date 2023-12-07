@@ -10,17 +10,12 @@ import java.util.List;
 @Service
 public class FoodService {
 
-    private final MapRepository mapRepository;
+    private final FoodJpaRepository foodJpaRepository;
 
-    public FoodService(MapRepository mapRepository){
-        this.mapRepository = mapRepository;
+    public FoodService(FoodJpaRepository foodJpaRepository){
+        this.foodJpaRepository = foodJpaRepository;
     }
 
-//    private final FoodJpaRepository foodJpaRepository;
-//
-//    public FoodService(FoodJpaRepository foodJpaRepository){
-//        this.foodJpaRepository = foodJpaRepository;
-//    }
 
     // 음식 목록 조회
     public List<FoodDto> getFoods(Food food) {
@@ -28,7 +23,7 @@ public class FoodService {
         List<FoodDto> dtos = new ArrayList<FoodDto>();
 
         //전체 데이터 가져오기
-        List<Food> foods = mapRepository.getFoods(food);
+        List<Food> foods = foodJpaRepository.findAll();
 
         //Entity->DTO
         for(int i = 0; i< foods.size(); i++){
@@ -41,63 +36,56 @@ public class FoodService {
     }
 
     // 음식 상세 조회
-    public FoodDto getFoodById(Integer foodId) {
-
-        //데이터 상세 조회
-        Food food = mapRepository.getById(foodId);
-        log.info("food={}", food);
-
-        //Entity -> DTO
-        return FoodDto.createFromEntity(food);
+    public FoodDto findById(Integer foodId) {
+        Food food = foodJpaRepository.findById(foodId).orElse(null);
+        FoodDto dto = FoodDto.createFromEntity(food);
+        return dto;
 
     }
 
 
     // 음식 등록
-    public Food createFood(FoodDto dto) {
+    public Food save(FoodDto dto) {
 
         //DTO->Entity
         Food food = dto.toEntity();
         log.info("food={}", food);
 
         //repository에 저장
-        Food saved = mapRepository.create(food);
+        return foodJpaRepository.save(food);
 
-        return saved;
     }
 
 
     // 음식 수정
     public Food updateFood(Integer foodId, FoodDto dto) {
 
-        //수정할 데이터 Entity 변환
         dto.setFoodId(foodId);
+
+        //DTO->Entity
         Food data = dto.toEntity();
         log.info("data={}", data);
 
         //해당아이디 게시글 확인 후 수정
-        Food target = mapRepository.getById(foodId);
+        Food target = foodJpaRepository.findById(foodId).orElseThrow(null);
         log.info("target={}", target);
 
         if(target != null){
-            mapRepository.update(foodId, target);
-        }else{
-
+            foodJpaRepository.save(data);
         }
         return data;
     }
 
     // 음식 삭제
-    public boolean deleteFood(Integer foodId) {
+    public void deleteFood(Integer foodId) {
 
         //해당아이디 게시글 확인 후 삭제
-        Food target = mapRepository.getById(foodId);
+        Food target = foodJpaRepository.getById(foodId);
 
         if (target != null) {
-            mapRepository.delete(foodId);
-            return true;
+             foodJpaRepository.deleteById(foodId);
         }else{
-           return false;
+
         }
 
     }
