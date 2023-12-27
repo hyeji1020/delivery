@@ -1,5 +1,7 @@
 package com.study.sjicnho.delivery.food;
 
+import com.study.sjicnho.delivery.store.Store;
+import com.study.sjicnho.delivery.store.StoreRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -11,9 +13,11 @@ import java.util.List;
 public class FoodService {
 
     private final FoodJpaRepository foodJpaRepository;
+    private final StoreRepository storeRepository;
 
-    public FoodService(FoodJpaRepository foodJpaRepository){
+    public FoodService(FoodJpaRepository foodJpaRepository, StoreRepository storeRepository){
         this.foodJpaRepository = foodJpaRepository;
+        this.storeRepository = storeRepository;
     }
 
 
@@ -43,17 +47,19 @@ public class FoodService {
 
     }
 
-
     // 음식 등록
     public Food save(FoodDto dto) {
 
+        Store store = storeRepository.findById(dto.getStore().getStoreId()).get();
+        dto.setStore(store);
+        log.info("storeDto={}", store);
+
         //DTO->Entity
         Food food = dto.toEntity();
-        log.info("food={}", food);
+        log.info("foodservice:food={}", food);
 
         //repository에 저장
         return foodJpaRepository.save(food);
-
     }
 
 
@@ -87,7 +93,6 @@ public class FoodService {
         }else{
 
         }
-
     }
 
 

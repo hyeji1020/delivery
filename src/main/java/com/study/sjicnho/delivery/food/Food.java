@@ -1,6 +1,7 @@
 package com.study.sjicnho.delivery.food;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.study.sjicnho.delivery.store.Store;
 import lombok.*;
 
@@ -20,11 +21,20 @@ public class Food {
     private Integer foodId;
 
     private String foodName;
+    
     private int foodPrice;
 
+    private int foodQuantity;
+
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name="store_id")
     private Store store;
+
+//    public void calculateFood(){
+//        this.foodPrice = foodPrice * foodQuantity;
+//    }
+
 
 
 }

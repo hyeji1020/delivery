@@ -1,5 +1,6 @@
 package com.study.sjicnho.delivery.food;
 
+import com.study.sjicnho.delivery.store.Store;
 import lombok.*;
 
 @ToString
@@ -13,6 +14,8 @@ public class FoodDto {
     private Integer foodId;
     private String foodName;
     private int foodPrice;
+    private Store store;
+    private int foodQuantity;
 
 
     //DTO -> Entity
@@ -21,6 +24,8 @@ public class FoodDto {
                 .foodId(foodId)
                 .foodName(foodName)
                 .foodPrice(foodPrice)
+                .foodQuantity(foodQuantity)
+                .store(store)
                 .build();
     }
 
@@ -30,6 +35,8 @@ public class FoodDto {
                 .foodId(food.getFoodId())
                 .foodName(food.getFoodName())
                 .foodPrice(food.getFoodPrice())
+                .foodQuantity(food.getFoodQuantity())
+                .store(food.getStore())
                 .build();
     }
 

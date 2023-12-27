@@ -1,5 +1,7 @@
 package com.study.sjicnho.delivery.store;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.study.sjicnho.delivery.food.Food;
 import com.study.sjicnho.delivery.order.Order;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,7 +27,12 @@ public class Store {
     private Integer storeId;
 
     @OneToMany(mappedBy = "store")
+    @JsonIgnore
     private List<Order> orders = new ArrayList<Order>();
+
+    @OneToMany(mappedBy = "store")
+    @JsonIgnore
+    private List<Food> foods= new ArrayList<>();
 
     private String name;
     private String address;
