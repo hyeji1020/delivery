@@ -4,6 +4,8 @@ package com.study.sjicnho.delivery.store;
 import lombok.*;
 
 import javax.persistence.Id;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
@@ -13,10 +15,16 @@ import javax.persistence.Id;
 public class StoreDto {
 
     private Integer storeId;
+
+    @NotBlank(message = "가게명은 필수 입력 값입니다.")
     private String name;
+
+    @NotNull(message = "주소는 필수 입력 값입니다.")
     private String address;
+
+    @NotBlank(message = "전화번호는 필수 입력 값입니다.")
     private String phoneNumber;
-    private String review;
+
 
     //DTO->Entity
     public Store toEntity(){
@@ -25,7 +33,6 @@ public class StoreDto {
                 .name(name)
                 .address(address)
                 .phoneNumber(phoneNumber)
-                .review(review)
                 .build();
     }
 
@@ -36,7 +43,6 @@ public class StoreDto {
                 .name(store.getName())
                 .address(store.getAddress())
                 .phoneNumber(store.getPhoneNumber())
-                .review(store.getReview())
                 .build();
     }
 }

@@ -1,5 +1,6 @@
 package com.study.sjicnho.delivery.order;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.study.sjicnho.delivery.store.Store;
 import com.study.sjicnho.delivery.payment.PaymentOption;
 import com.study.sjicnho.delivery.user.User;
@@ -12,6 +13,8 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
@@ -31,13 +34,19 @@ public class Order {
 
     @ManyToOne
     @JoinColumn(name="user_id")
+    @JsonIgnore
     private User user;
 
     @ManyToOne
     @JoinColumn(name="store_id")
+    @JsonIgnore
     private Store store;
 
+    //결제 총 금액
     private int paymentAmount;
+
+    //주문 수량
+    private int quantity;
 
     @Enumerated(EnumType.STRING)
     private PaymentOption paymentOption;
@@ -56,8 +65,5 @@ public class Order {
         String orderFormatDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
         this.orderDate = orderFormatDate;
     }
-
-
-
 
 }

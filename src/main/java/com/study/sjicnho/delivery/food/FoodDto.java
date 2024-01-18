@@ -3,6 +3,9 @@ package com.study.sjicnho.delivery.food;
 import com.study.sjicnho.delivery.store.Store;
 import lombok.*;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
@@ -12,19 +15,23 @@ import lombok.*;
 public class FoodDto {
 
     private Integer foodId;
-    private String foodName;
-    private int foodPrice;
+
+    @NotNull
+    private String name;
+
+    @NotNull(message = "전화번호는 필수 입력 값입니다.")
+    @Min(0)
+    private int price;
+
     private Store store;
-    private int foodQuantity;
 
 
     //DTO -> Entity
     public Food toEntity(){
         return Food.builder()
                 .foodId(foodId)
-                .foodName(foodName)
-                .foodPrice(foodPrice)
-                .foodQuantity(foodQuantity)
+                .name(name)
+                .price(price)
                 .store(store)
                 .build();
     }
@@ -33,12 +40,10 @@ public class FoodDto {
     public static FoodDto createFromEntity(Food food) {
         return FoodDto.builder()
                 .foodId(food.getFoodId())
-                .foodName(food.getFoodName())
-                .foodPrice(food.getFoodPrice())
-                .foodQuantity(food.getFoodQuantity())
+                .name(food.getName())
+                .price(food.getPrice())
                 .store(food.getStore())
                 .build();
     }
-
-
+    // BeanUtils.copyProperties()
 }

@@ -12,6 +12,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,9 +35,9 @@ public class Store {
     @OneToMany(mappedBy = "store")
     @JsonIgnore
     private List<Food> foods= new ArrayList<>();
-
+    @NotBlank
     private String name;
     private String address;
     private String phoneNumber;
-    private String review;
+
 }

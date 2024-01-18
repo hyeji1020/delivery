@@ -7,8 +7,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.security.PrivateKey;
-import java.sql.Array;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,9 +25,13 @@ public class User {
     @Column(name="user_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer userId;
+
     private String id;
+
     private String name;
+
     private String email;
+
     private String password;
 
     @Enumerated(EnumType.STRING) //관리자, 사용자 유저
@@ -34,6 +39,5 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private List<Order> orders = new ArrayList<Order>();
-
 
 }

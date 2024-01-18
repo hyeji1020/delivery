@@ -7,8 +7,10 @@ import com.study.sjicnho.delivery.payment.PaymentOption;
 import com.study.sjicnho.delivery.user.User;
 import lombok.*;
 
-import javax.jws.soap.SOAPBinding;
-import java.util.Date;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 
 @Getter
 @Setter
@@ -16,14 +18,26 @@ import java.util.Date;
 @Builder
 @AllArgsConstructor
 public class OrderDto {
+
     private Integer orderId;
     private User user;
     private Store store;
+
+    @NotNull
     private int paymentAmount;
+
+    @Min(value = 1, message = "주문 수량은 최소 1개 이상이어야 합니다.")
+    private int quantity;
+
     private PaymentOption paymentOption;
+
     private OrderStatus status;
+
+    @NotNull(message = "주소는 필수 입력 값입니다.")
     private String deliveryAddress;
+
     private String orderDate;
+
 
     public User usermake(){
         Integer id = user.getUserId();
@@ -32,13 +46,13 @@ public class OrderDto {
                 .build();
     }
 
-
     //DTO -> Entity
     public Order toEntity(){
         return Order.builder()
                 .orderId(orderId)
                 .user(user)
                 .store(store)
+                .quantity(quantity)
                 .paymentAmount(paymentAmount)
                 .paymentOption(paymentOption)
                 .status(status)
@@ -53,6 +67,7 @@ public class OrderDto {
                 .orderId(order.getOrderId())
                 .user(order.getUser())
                 .store(order.getStore())
+                .quantity(order.getQuantity())
                 .paymentAmount(order.getPaymentAmount())
                 .paymentOption(order.getPaymentOption())
                 .status(order.getStatus())
