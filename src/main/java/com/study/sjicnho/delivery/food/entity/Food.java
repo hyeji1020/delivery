@@ -1,4 +1,4 @@
-package com.study.sjicnho.delivery.food;
+package com.study.sjicnho.delivery.food.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;

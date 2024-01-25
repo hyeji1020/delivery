@@ -1,6 +1,6 @@
-package com.study.sjicnho.delivery.order;
+package com.study.sjicnho.delivery.order.repository;
 
-import org.aspectj.weaver.ast.Or;
+import com.study.sjicnho.delivery.order.entity.Order;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

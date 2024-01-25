@@ -1,10 +1,11 @@
-package com.study.sjicnho.delivery.order;
+package com.study.sjicnho.delivery.order.dto;
 
-
+import com.study.sjicnho.delivery.food.entity.Food;
+import com.study.sjicnho.delivery.order.OrderStatus;
+import com.study.sjicnho.delivery.order.entity.Order;
 import com.study.sjicnho.delivery.store.Store;
 import com.study.sjicnho.delivery.payment.PaymentOption;
-
-import com.study.sjicnho.delivery.user.User;
+import com.study.sjicnho.delivery.user.entity.User;
 import lombok.*;
 
 import javax.validation.constraints.Min;

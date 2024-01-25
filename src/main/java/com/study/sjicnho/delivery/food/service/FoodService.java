@@ -1,5 +1,8 @@
-package com.study.sjicnho.delivery.food;
+package com.study.sjicnho.delivery.food.service;
 
+import com.study.sjicnho.delivery.food.entity.Food;
+import com.study.sjicnho.delivery.food.repository.FoodJpaRepository;
+import com.study.sjicnho.delivery.food.dto.FoodDto;
 import com.study.sjicnho.delivery.store.Store;
 import com.study.sjicnho.delivery.store.StoreRepository;
 import lombok.extern.slf4j.Slf4j;

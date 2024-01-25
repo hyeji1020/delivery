@@ -1,5 +1,8 @@
-package com.study.sjicnho.delivery.user;
+package com.study.sjicnho.delivery.user.service;
 
+import com.study.sjicnho.delivery.user.repository.UserRepository;
+import com.study.sjicnho.delivery.user.dto.UserDto;
+import com.study.sjicnho.delivery.user.entity.User;
 import org.springframework.stereotype.Service;
 
 import javax.jws.soap.SOAPBinding;

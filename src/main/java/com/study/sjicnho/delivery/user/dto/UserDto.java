@@ -1,6 +1,7 @@
-package com.study.sjicnho.delivery.user;
+package com.study.sjicnho.delivery.user.dto;
 
-
+import com.study.sjicnho.delivery.user.RoleType;
+import com.study.sjicnho.delivery.user.entity.User;
 import lombok.*;
 
 import javax.jws.soap.SOAPBinding;

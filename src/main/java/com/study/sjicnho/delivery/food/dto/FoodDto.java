@@ -1,5 +1,6 @@
-package com.study.sjicnho.delivery.food;
+package com.study.sjicnho.delivery.food.dto;
 
+import com.study.sjicnho.delivery.food.entity.Food;
 import com.study.sjicnho.delivery.store.Store;
 import lombok.*;
 

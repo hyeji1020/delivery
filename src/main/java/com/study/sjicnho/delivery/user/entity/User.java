@@ -1,15 +1,12 @@
-package com.study.sjicnho.delivery.user;
+package com.study.sjicnho.delivery.user.entity;
 
-import com.study.sjicnho.delivery.order.Order;
+import com.study.sjicnho.delivery.order.entity.Order;
+import com.study.sjicnho.delivery.user.RoleType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -1,6 +1,8 @@
 package com.study.sjicnho.delivery.order;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.study.sjicnho.delivery.food.entity.Food;
+import com.study.sjicnho.delivery.order.OrderStatus;
 import com.study.sjicnho.delivery.store.Store;
 import com.study.sjicnho.delivery.payment.PaymentOption;
 import com.study.sjicnho.delivery.user.User;
