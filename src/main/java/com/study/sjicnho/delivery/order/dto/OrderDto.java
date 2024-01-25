@@ -7,9 +7,7 @@ import com.study.sjicnho.delivery.store.Store;
 import com.study.sjicnho.delivery.payment.PaymentOption;
 import com.study.sjicnho.delivery.user.entity.User;
 import lombok.*;
-
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 
@@ -23,6 +21,7 @@ public class OrderDto {
     private Integer orderId;
     private User user;
     private Store store;
+    private Food food;
 
     @NotNull
     private int paymentAmount;
@@ -53,8 +52,9 @@ public class OrderDto {
                 .orderId(orderId)
                 .user(user)
                 .store(store)
+                .food(food)
                 .quantity(quantity)
-                .paymentAmount(paymentAmount)
+                .paymentAmount(calculateAmount())
                 .paymentOption(paymentOption)
                 .status(status)
                 .deliveryAddress(deliveryAddress)
@@ -68,6 +68,7 @@ public class OrderDto {
                 .orderId(order.getOrderId())
                 .user(order.getUser())
                 .store(order.getStore())
+                .food(order.getFood())
                 .quantity(order.getQuantity())
                 .paymentAmount(order.getPaymentAmount())
                 .paymentOption(order.getPaymentOption())
@@ -76,4 +77,10 @@ public class OrderDto {
                 .orderDate(order.getOrderDate())
                 .build();
     }
+
+    public int calculateAmount(){
+        paymentAmount = food.getPrice()* quantity;
+        return paymentAmount;
+    }
+
 }

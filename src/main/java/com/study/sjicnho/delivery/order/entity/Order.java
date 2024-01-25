@@ -1,25 +1,20 @@
-package com.study.sjicnho.delivery.order;
+package com.study.sjicnho.delivery.order.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.study.sjicnho.delivery.food.entity.Food;
 import com.study.sjicnho.delivery.order.OrderStatus;
 import com.study.sjicnho.delivery.store.Store;
 import com.study.sjicnho.delivery.payment.PaymentOption;
-import com.study.sjicnho.delivery.user.User;
+import com.study.sjicnho.delivery.user.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 
 @Entity
 @Table(name="orders")
@@ -44,10 +39,14 @@ public class Order {
     @JsonIgnore
     private Store store;
 
+    @ManyToOne
+    @JoinColumn(name = "food_id")
+    @JsonIgnore
+    private Food food;
+
     //결제 총 금액
     private int paymentAmount;
 
-    //주문 수량
     private int quantity;
 
     @Enumerated(EnumType.STRING)
