@@ -6,9 +6,7 @@ import com.study.sjicnho.delivery.order.dto.OrderDto;
 import com.study.sjicnho.delivery.order.dto.OrderLineDto;
 import com.study.sjicnho.delivery.order.entity.Order;
 import com.study.sjicnho.delivery.order.entity.OrderLine;
-import com.study.sjicnho.delivery.order.repository.OrderLineRepository;
 import com.study.sjicnho.delivery.order.repository.OrderRepository;
-import com.study.sjicnho.delivery.store.repository.StoreRepository;
 import com.study.sjicnho.delivery.user.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -22,13 +20,12 @@ public class OrderService{
     private final OrderRepository orderRepository;
     private final FoodJpaRepository foodRepository;
     private final UserRepository userRepository;
-    private final OrderLineRepository orderLineRepository;
 
-    public OrderService(OrderRepository orderRepository, FoodJpaRepository foodRepository, UserRepository userRepository, OrderLineRepository orderLineRepository) {
+
+    public OrderService(OrderRepository orderRepository, FoodJpaRepository foodRepository, UserRepository userRepository) {
         this.orderRepository = orderRepository;
         this.foodRepository = foodRepository;
         this.userRepository = userRepository;
-        this.orderLineRepository = orderLineRepository;
     }
 
 
