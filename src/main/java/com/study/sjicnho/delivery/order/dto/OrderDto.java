@@ -1,14 +1,13 @@
 package com.study.sjicnho.delivery.order.dto;
 
-import com.study.sjicnho.delivery.food.entity.Food;
 import com.study.sjicnho.delivery.order.OrderStatus;
 import com.study.sjicnho.delivery.order.entity.Order;
-import com.study.sjicnho.delivery.store.Store;
 import com.study.sjicnho.delivery.payment.PaymentOption;
 import com.study.sjicnho.delivery.user.entity.User;
 import lombok.*;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Getter
@@ -18,16 +17,11 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 public class OrderDto {
 
-    private Integer orderId;
     private User user;
-    private Store store;
-    private Food food;
+    private List<OrderLineDto> orderLines;
 
     @NotNull
-    private int paymentAmount;
-
-    @Min(value = 1, message = "주문 수량은 최소 1개 이상이어야 합니다.")
-    private int quantity;
+    private int totalAmount;
 
     private PaymentOption paymentOption;
 
@@ -38,7 +32,6 @@ public class OrderDto {
 
     private String orderDate;
 
-
     public User usermake(){
         Integer id = user.getUserId();
         return User.builder()
@@ -46,41 +39,40 @@ public class OrderDto {
                 .build();
     }
 
-    //DTO -> Entity
-    public Order toEntity(){
-        return Order.builder()
-                .orderId(orderId)
-                .user(user)
-                .store(store)
-                .food(food)
-                .quantity(quantity)
-                .paymentAmount(calculateAmount())
-                .paymentOption(paymentOption)
-                .status(status)
-                .deliveryAddress(deliveryAddress)
-                .orderDate(orderDate)
-                .build();
+    public Order toEntity() {
+        return new Order(
+                user,
+                orderLines.stream().map(OrderLineDto::toEntity).collect(Collectors.toList()),
+                totalAmount,
+                paymentOption,
+                status,
+                deliveryAddress,
+                orderDate
+        );
     }
 
-    //Entity -> DTO
+    // Entity -> DTO
     public static OrderDto createFromEntity(Order order) {
         return OrderDto.builder()
-                .orderId(order.getOrderId())
                 .user(order.getUser())
-                .store(order.getStore())
-                .food(order.getFood())
-                .quantity(order.getQuantity())
-                .paymentAmount(order.getPaymentAmount())
+                .totalAmount(order.getTotalAmount())
                 .paymentOption(order.getPaymentOption())
                 .status(order.getStatus())
                 .deliveryAddress(order.getDeliveryAddress())
                 .orderDate(order.getOrderDate())
+                .orderLines(order.getOrderLines().stream()
+                        .map(OrderLineDto::createFromEntity) // OrderLine 엔터티를 OrderLineDto로 변환
+                        .collect(Collectors.toList()))
                 .build();
     }
 
-    public int calculateAmount(){
-        paymentAmount = food.getPrice()* quantity;
-        return paymentAmount;
+    public int calculateTotal() {
+        int total = 0;
+
+        for (OrderLineDto orderLineDto : orderLines) {
+            total += orderLineDto.calculateSubtotal();
+        }
+        return total;
     }
 
 }

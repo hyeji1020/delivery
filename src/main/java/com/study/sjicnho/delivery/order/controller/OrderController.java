@@ -21,26 +21,28 @@ public class OrderController {
         this.foodService = foodService;
     }
 
-    //주문 조회
+    // 주문 조회
     @GetMapping("/{id}")
     public ResponseEntity<Order> findById(@PathVariable Integer id){
         Order order = orderService.findById(id);
         return ResponseEntity.ok(order);
     }
 
-    //주문 리스트 조회
+    // 주문 리스트 조회
     @GetMapping
     public ResponseEntity<List<Order>> getOrders(){
         List<Order> orders = orderService.getOrders();
         return ResponseEntity.ok(orders);
     }
 
-    //주문 등록
+    // 주문 등록
     @PostMapping
     public ResponseEntity<Order> save(@Valid @RequestBody OrderDto orderDto){
         orderService.save(orderDto);
         return ResponseEntity.ok().build();
     }
+
+
 
 //    @PatchMapping("/{id}/accept")
 //    public ResponseEntity<Void> acceptOrder(@PathVariable Integer id){

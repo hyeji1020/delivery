@@ -1,9 +1,7 @@
 package com.study.sjicnho.delivery.order.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.study.sjicnho.delivery.food.entity.Food;
 import com.study.sjicnho.delivery.order.OrderStatus;
-import com.study.sjicnho.delivery.store.Store;
 import com.study.sjicnho.delivery.payment.PaymentOption;
 import com.study.sjicnho.delivery.user.entity.User;
 import lombok.AllArgsConstructor;
@@ -15,6 +13,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @Entity
 @Table(name="orders")
@@ -30,24 +29,19 @@ public class Order {
     private Integer orderId;
 
     @ManyToOne
-    @JoinColumn(name="user_id")
+    @JoinColumn(name = "user_id")
     @JsonIgnore
     private User user;
 
-    @ManyToOne
-    @JoinColumn(name="store_id")
-    @JsonIgnore
-    private Store store;
+//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "order")
+//    private List<OrderLine> orderLines = new ArrayList<>();
 
-    @ManyToOne
-    @JoinColumn(name = "food_id")
-    @JsonIgnore
-    private Food food;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "order_id")  // OrderLine 엔터티의 order_id 외래 키 지정
+    private List<OrderLine> orderLines;
 
-    //결제 총 금액
-    private int paymentAmount;
-
-    private int quantity;
+    //총액
+    private int totalAmount;
 
     @Enumerated(EnumType.STRING)
     private PaymentOption paymentOption;
@@ -57,14 +51,28 @@ public class Order {
 
     private String deliveryAddress;
 
-//    @Temporal(TemporalType.DATE)
+    //    @Temporal(TemporalType.DATE)
     @CreatedDate
     private String orderDate;
 
+
+    // 생성자
+    public Order(User user, List<OrderLine> orderLines, int totalAmount, PaymentOption paymentOption,
+                 OrderStatus status, String deliveryAddress, String orderDate) {
+        this.user = user;
+        this.orderLines = orderLines;
+        this.totalAmount = totalAmount;
+        this.paymentOption = paymentOption;
+        this.status = status;
+        this.deliveryAddress = deliveryAddress;
+        this.orderDate = orderDate;
+    }
+
     @PrePersist
-    public void onPrePersist(){
+    public void onPrePersist() {
         String orderFormatDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
         this.orderDate = orderFormatDate;
     }
 
 }
+
