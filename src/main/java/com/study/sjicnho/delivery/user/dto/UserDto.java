@@ -3,11 +3,8 @@ package com.study.sjicnho.delivery.user.dto;
 import com.study.sjicnho.delivery.user.RoleType;
 import com.study.sjicnho.delivery.user.entity.User;
 import lombok.*;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
-import javax.jws.soap.SOAPBinding;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
@@ -20,9 +17,6 @@ import javax.validation.constraints.Pattern;
 public class UserDto {
 
     private Integer userId;
-
-    @NotBlank(message = "아이디는 필수 입력 값입니다.")
-    private String id;
 
     @NotBlank(message = "이름은 필수 입력 값입니다.")
     private String name;
@@ -43,7 +37,6 @@ public class UserDto {
     public User toEntity(){
         return User.builder()
                 .userId(userId)
-                .id(id)
                 .name(name)
                 .email(email)
                 .password(password)
@@ -55,7 +48,6 @@ public class UserDto {
     public static UserDto createFromEntity(User user) {
         return UserDto.builder()
                 .userId(user.getUserId())
-                .id(user.getId())
                 .name(user.getName())
                 .email(user.getEmail())
                 .password(user.getPassword())

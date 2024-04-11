@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,18 +25,27 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer userId;
 
-    private String id;
-
     private String name;
 
+    @Column(length = 45, unique = true)
     private String email;
 
+    @Column(length = 100)
     private String password;
 
-    @Enumerated(EnumType.STRING) //관리자, 사용자 유저
+    @Enumerated(EnumType.STRING)
     private RoleType roleType;
 
-    @OneToMany(mappedBy = "user")
-    private List<Order> orders = new ArrayList<Order>();
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Order> orders = new ArrayList<>();
+
+    public void encodePassword(PasswordEncoder passwordEncoder){
+        this.password = passwordEncoder.encode(password);
+    }
+    public User(Integer userId, String name,String password) {
+        this.userId = userId;
+        this.name = name;
+        this.password = password;
+    }
 
 }
