@@ -1,8 +1,8 @@
 package com.study.sjicnho.delivery.order.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.study.sjicnho.delivery.order.OrderStatus;
 import com.study.sjicnho.delivery.payment.PaymentOption;
+import com.study.sjicnho.delivery.store.entity.Store;
 import com.study.sjicnho.delivery.user.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -33,11 +33,17 @@ public class Order {
     @JsonIgnore
     private User user;
 
+    @ManyToOne
+    @JoinColumn(name = "store_id")
+    @JsonIgnore
+    private Store store;
+
 //    @OneToMany(cascade = CascadeType.ALL, mappedBy = "order")
 //    private List<OrderLine> orderLines = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "order_id")  // OrderLine 엔터티의 order_id 외래 키 지정
+    @JoinColumn(name = "order_id")
+    @JsonIgnore
     private List<OrderLine> orderLines;
 
     //총액
@@ -47,26 +53,38 @@ public class Order {
     private PaymentOption paymentOption;
 
     @Enumerated(EnumType.STRING)
-    private OrderStatus status;
+    private OrderStatus orderStatus;
 
     private String deliveryAddress;
 
-    //    @Temporal(TemporalType.DATE)
     @CreatedDate
     private String orderDate;
 
-
-    // 생성자
-    public Order(User user, List<OrderLine> orderLines, int totalAmount, PaymentOption paymentOption,
-                 OrderStatus status, String deliveryAddress, String orderDate) {
-        this.user = user;
-        this.orderLines = orderLines;
-        this.totalAmount = totalAmount;
-        this.paymentOption = paymentOption;
-        this.status = status;
-        this.deliveryAddress = deliveryAddress;
-        this.orderDate = orderDate;
+    public void approve() {
+        changeOrderStatus(OrderStatus.ACCEPTED);
     }
+
+    public void reject() {
+        changeOrderStatus(OrderStatus.REJECTED);
+    }
+
+    public void cancel() {
+        changeOrderStatus(OrderStatus.CANCELED);
+    }
+
+    private boolean isAccepting() {
+        return orderStatus == OrderStatus.ACCEPTING;
+    }
+
+    private void changeOrderStatus(OrderStatus status) {
+        if (isAccepting()) {
+            orderStatus = status;
+            return;
+        }
+
+        throw new IllegalStateException();
+    }
+
 
     @PrePersist
     public void onPrePersist() {

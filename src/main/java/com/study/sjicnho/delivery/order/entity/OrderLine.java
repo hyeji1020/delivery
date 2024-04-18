@@ -1,5 +1,6 @@
 package com.study.sjicnho.delivery.order.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.study.sjicnho.delivery.food.entity.Food;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,10 +22,12 @@ public class OrderLine {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
+    @JsonIgnore
     private Order order; // 주문
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "food_id")
+  //  @JsonIgnore
     private Food food; // 주문한 음식
 
     private int quantity;
