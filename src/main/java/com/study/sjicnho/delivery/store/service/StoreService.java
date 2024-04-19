@@ -1,5 +1,10 @@
-package com.study.sjicnho.delivery.store;
+package com.study.sjicnho.delivery.store.service;
 
+import com.study.sjicnho.delivery.ErrorCode;
+import com.study.sjicnho.delivery.store.dto.StoreDto;
+import com.study.sjicnho.delivery.store.entity.Store;
+import com.study.sjicnho.delivery.store.exception.NoSuchStore;
+import com.study.sjicnho.delivery.store.repository.StoreRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +33,8 @@ public class StoreService {
 
     //가게 상세 조회
     public Store findById(Integer id){
-        return storeRepository.findById(id).orElse(null);
+        return storeRepository.findById(id)
+                .orElseThrow(() -> new NoSuchStore(ErrorCode.STORE_NOT_FOUND));
     }
 
     public Store updateStore(Integer id, StoreDto storeDto) {
@@ -37,7 +43,8 @@ public class StoreService {
 
         Store store = storeDto.toEntity();
 
-        Store target = storeRepository.findById(id).orElse(null);
+        Store target = storeRepository.findById(id)
+                .orElseThrow(() -> new NoSuchStore(ErrorCode.STORE_NOT_FOUND));
 
         if(store != null) {
             storeRepository.save(store);
@@ -46,9 +53,11 @@ public class StoreService {
     }
 
     public void deleteStore(Integer id) {
-        Store store = storeRepository.findById(id).orElse(null);
+        Store store = storeRepository.findById(id)
+                .orElseThrow(() -> new NoSuchStore(ErrorCode.STORE_NOT_FOUND));
         if(store != null){
             storeRepository.delete(store);
         }
     }
+
 }

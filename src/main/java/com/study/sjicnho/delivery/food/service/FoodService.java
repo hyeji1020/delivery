@@ -1,15 +1,21 @@
 package com.study.sjicnho.delivery.food.service;
 
+import com.study.sjicnho.delivery.ErrorCode;
+import com.study.sjicnho.delivery.food.controller.FoodResponseDto;
 import com.study.sjicnho.delivery.food.entity.Food;
+import com.study.sjicnho.delivery.food.exception.NoSuchFood;
 import com.study.sjicnho.delivery.food.repository.FoodJpaRepository;
 import com.study.sjicnho.delivery.food.dto.FoodDto;
-import com.study.sjicnho.delivery.store.Store;
-import com.study.sjicnho.delivery.store.StoreRepository;
+import com.study.sjicnho.delivery.order.repository.OrderLineRepository;
+import com.study.sjicnho.delivery.store.dto.StoreDto;
+import com.study.sjicnho.delivery.store.entity.Store;
+import com.study.sjicnho.delivery.store.repository.StoreRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Slf4j
 @Service
@@ -17,10 +23,12 @@ public class FoodService {
 
     private final FoodJpaRepository foodJpaRepository;
     private final StoreRepository storeRepository;
+    private final OrderLineRepository orderLineRepository;
 
-    public FoodService(FoodJpaRepository foodJpaRepository, StoreRepository storeRepository){
+    public FoodService(FoodJpaRepository foodJpaRepository, StoreRepository storeRepository, OrderLineRepository orderLineRepository){
         this.foodJpaRepository = foodJpaRepository;
         this.storeRepository = storeRepository;
+        this.orderLineRepository = orderLineRepository;
     }
 
 
@@ -39,27 +47,45 @@ public class FoodService {
             dtos.add(dto);
         }
 
+        if(dtos != null){
+            return dtos;
+        }else{
+            new NoSuchElementException("존재하지 않습니다.");
+        }
         return dtos;
     }
 
     // 음식 상세 조회
     public FoodDto findById(Integer foodId) {
-        Food food = foodJpaRepository.findById(foodId).orElse(null);
+
+        Food food = foodJpaRepository.findById(foodId).orElseThrow(() ->
+                new NoSuchFood(ErrorCode.FOOD_NOT_FOUND));
+
         FoodDto dto = FoodDto.createFromEntity(food);
+        log.info("foodservice:dto={}", dto);
+
         return dto;
 
+    }
+
+    private Food findFoodById(Integer foodId) {
+        return foodJpaRepository.findById(foodId)
+                .orElseThrow(() -> new NoSuchFood(ErrorCode.FOOD_NOT_FOUND));
     }
 
     // 음식 등록
     public Food save(FoodDto dto) {
 
-        Store store = storeRepository.findById(dto.getStore().getStoreId()).get();
-        dto.setStore(store);
-        log.info("storeDto={}", store);
+        Store store = storeRepository.findById(dto.getStore().getStoreId())
+                .orElseThrow(() -> new NoSuchElementException("해당 가게가 존재하지 않습니다."));
 
-        //DTO->Entity
+        //DTO->Entity 변환
         Food food = dto.toEntity();
         log.info("foodservice:food={}", food);
+
+        //가게 설정
+        dto.setStore(store);
+        log.info("storeDto={}", store);
 
         //repository에 저장
         return foodJpaRepository.save(food);
@@ -75,12 +101,13 @@ public class FoodService {
         Food data = dto.toEntity();
         log.info("data={}", data);
 
-        //해당아이디 게시글 확인 후 수정
+        //음식아이디 확인 후 수정
         Food target = foodJpaRepository.findById(foodId).orElseThrow(null);
-        log.info("target={}", target);
 
         if(target != null){
             foodJpaRepository.save(data);
+        }else{
+            new NoSuchFood(ErrorCode.FOOD_NOT_FOUND);
         }
         return data;
     }
@@ -94,7 +121,7 @@ public class FoodService {
         if (target != null) {
              foodJpaRepository.deleteById(foodId);
         }else{
-
+            new NoSuchFood(ErrorCode.FOOD_NOT_FOUND);
         }
     }
 
