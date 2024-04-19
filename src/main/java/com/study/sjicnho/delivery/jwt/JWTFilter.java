@@ -1,6 +1,6 @@
 package com.study.sjicnho.delivery.jwt;
 
-import com.study.sjicnho.delivery.user.RoleType;
+import com.study.sjicnho.delivery.user.entity.UserRole;
 import com.study.sjicnho.delivery.user.dto.UserDto;
 import com.study.sjicnho.delivery.user.entity.User;
 import com.study.sjicnho.delivery.user.service.CustomUserDetails;
@@ -9,7 +9,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
-
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -56,16 +55,20 @@ public class JWTFilter extends OncePerRequestFilter {
             return;
         }
 
-        //토큰에서 email, role 획득
+        //토큰에서 email, role, userId(PK) 획득
         String email = jwtUtil.getUserEmail(token);
         String role = jwtUtil.getRole(token);
+        String id = jwtUtil.getId(token);
 
         //UserEntity를 생성하여 값 set
         UserDto userDto = new UserDto();
         userDto.setEmail(email);
-        //요청올때마다 db를 조회하기 때문에 임시 비밀번호 넣기
+        userDto.setUserId(Integer.valueOf(id));
+
+        //요청 올 때마다 db를 조회하기 때문에 임시 비밀번호 넣기
         userDto.setPassword("password1234!");
-        userDto.setRoleType(RoleType.valueOf(role));
+        userDto.setUserRole(UserRole.valueOf(role));
+
         User user = userDto.toEntity();
 
         //UserDetails에 회원 정보 객체 담기

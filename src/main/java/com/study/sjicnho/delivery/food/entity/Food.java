@@ -1,13 +1,12 @@
 package com.study.sjicnho.delivery.food.entity;
 
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.study.sjicnho.delivery.store.Store;
-import com.sun.istack.NotNull;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.study.sjicnho.delivery.order.entity.OrderLine;
+import com.study.sjicnho.delivery.store.entity.Store;
 import lombok.*;
-
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -21,19 +20,16 @@ public class Food {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer foodId;
-
     private String name;
-
     private int price;
 
     @ManyToOne
-    @JsonIgnore
     @JoinColumn(name="store_id")
+    @JsonIgnore
     private Store store;
 
-
-    public int calculate(int quantity) {
-        return price * quantity;
-    }
+    @OneToMany(mappedBy = "food", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<OrderLine> orderLines;
 
 }

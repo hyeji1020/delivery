@@ -34,20 +34,6 @@ public class OrderDto {
 
     private String orderDate;
 
-
-//    public Order toEntity() {
-//        return new Order(
-//                user,
-//                orderLines.stream().map(OrderLineDto::toEntity).collect(Collectors.toList()),
-//                store,
-//                totalAmount,
-//                paymentOption,
-//                orderStatus,
-//                deliveryAddress,
-//                orderDate
-//        );
-//    }
-
     public Order toEntity(){
         return Order.builder()
                 .user(user)

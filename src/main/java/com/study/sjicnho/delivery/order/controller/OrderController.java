@@ -3,6 +3,7 @@ package com.study.sjicnho.delivery.order.controller;
 import com.study.sjicnho.delivery.food.service.FoodService;
 import com.study.sjicnho.delivery.order.entity.Order;
 import com.study.sjicnho.delivery.order.dto.OrderDto;
+import com.study.sjicnho.delivery.order.entity.OrderStatus;
 import com.study.sjicnho.delivery.order.service.OrderService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -25,17 +26,17 @@ public class OrderController {
     // 주문 조회
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('CUSTOMER', 'OWNER')")
-    public ResponseEntity<Order> findById(@PathVariable Integer id){
-        Order order = orderService.findById(id);
-        return ResponseEntity.ok().body(order);
+    public ResponseEntity<OrderDto> findById(@PathVariable Integer id){
+        OrderDto orderDto = orderService.findById(id);
+        return ResponseEntity.ok(orderDto);
     }
 
     // 주문 리스트 조회
     @GetMapping
     @PreAuthorize("hasAnyAuthority('CUSTOMER', 'OWNER')")
-    public ResponseEntity<List<Order>> getOrders(){
-        List<Order> orders = orderService.getOrders();
-        return ResponseEntity.ok().body(orders);
+    public ResponseEntity<List<OrderDto>> getOrders(){
+        List<OrderDto> orders = orderService.getOrders();
+        return ResponseEntity.ok(orders);
     }
 
     // 주문 등록
@@ -49,25 +50,25 @@ public class OrderController {
     //주문 수락
     @PatchMapping("/{id}/accept")
     @PreAuthorize("hasAnyAuthority('OWNER')")
-    public ResponseEntity<Void> acceptOrder(@PathVariable Integer id){
-        orderService.acceptOrder(id);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<OrderStatus> acceptOrder(@PathVariable Integer id){
+        OrderStatus orderStatus = orderService.acceptOrder(id);
+        return ResponseEntity.ok(orderStatus);
     }
 
     //주문 취소
     @PatchMapping("/{id}/cancel")
     @PreAuthorize("hasAnyAuthority('CUSTOMER')")
-    public ResponseEntity<Void> cancelOrder(@PathVariable Integer id){
-        orderService.cancelOrder(id);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<OrderStatus> cancelOrder(@PathVariable Integer id){
+        OrderStatus orderStatus = orderService.cancelOrder(id);
+        return ResponseEntity.ok(orderStatus);
     }
 
     //주문 거절
     @PatchMapping("/{id}/reject")
     @PreAuthorize("hasAnyAuthority('OWNER')")
-    public ResponseEntity<Void> rejectOrder(@PathVariable Integer id){
-        orderService.rejectOrder(id);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<OrderStatus> rejectOrder(@PathVariable Integer id){
+        OrderStatus orderStatus = orderService.rejectOrder(id);
+        return ResponseEntity.ok(orderStatus);
     }
 
 }

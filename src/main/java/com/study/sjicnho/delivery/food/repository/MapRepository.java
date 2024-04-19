@@ -1,7 +1,7 @@
-package com.study.sjicnho.delivery.food;
+package com.study.sjicnho.delivery.food.repository;
 
+import com.study.sjicnho.delivery.food.entity.Food;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Repository;
 
 import java.util.*;
 
@@ -24,7 +24,7 @@ public class MapRepository implements FoodRepository{
         List<Food> foodList = new ArrayList<>();
 
         for (Food item : db.values()) {
-            if (item.getFoodName().equals(food.getFoodName())) {
+            if (item.getName().equals(food.getName())) {
                 foodList.add(item);
             }
         }

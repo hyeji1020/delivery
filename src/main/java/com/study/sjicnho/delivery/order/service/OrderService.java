@@ -1,22 +1,24 @@
 package com.study.sjicnho.delivery.order.service;
 
+import com.study.sjicnho.delivery.ErrorCode;
 import com.study.sjicnho.delivery.food.entity.Food;
+import com.study.sjicnho.delivery.food.exception.NoSuchFoodException;
 import com.study.sjicnho.delivery.food.repository.FoodJpaRepository;
 import com.study.sjicnho.delivery.order.dto.OrderDto;
 import com.study.sjicnho.delivery.order.dto.OrderLineDto;
 import com.study.sjicnho.delivery.order.entity.Order;
 import com.study.sjicnho.delivery.order.entity.OrderLine;
 import com.study.sjicnho.delivery.order.entity.OrderStatus;
+import com.study.sjicnho.delivery.order.exception.NoSuchOrderException;
 import com.study.sjicnho.delivery.order.repository.OrderRepository;
 import com.study.sjicnho.delivery.store.entity.Store;
+import com.study.sjicnho.delivery.store.exception.NoSuchStoreException;
 import com.study.sjicnho.delivery.store.repository.StoreRepository;
-import com.study.sjicnho.delivery.user.entity.User;
 import com.study.sjicnho.delivery.user.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 import static com.study.sjicnho.delivery.order.entity.OrderStatus.ACCEPTING;
 
 @Service
@@ -34,34 +36,52 @@ public class OrderService{
         this.storeRepository = storeRepository;
     }
 
-    public Order findById(Integer id){
-       return orderRepository.findById(id).orElse(null);
+    public OrderDto findById(Integer id){
+       Order order = orderRepository.findById(id)
+               .orElseThrow(() -> new NoSuchOrderException(ErrorCode.ORDER_NOT_FOUND));
+
+       return OrderDto.createFromEntity(order);
     }
 
-    public List<Order> getOrders() {
-        return orderRepository.findAll();
+    public List<OrderDto> getOrders() {
+        //전체 데이터 가져오기
+        List<Order> orders = orderRepository.findAll();
+
+        List<OrderDto> dtos = new ArrayList<OrderDto>();
+
+        //Entity->DTO
+        for(int i = 0; i< orders.size(); i++){
+            Order target = orders.get(i);
+            OrderDto dto = OrderDto.createFromEntity(target);
+            dtos.add(dto);
+        }
+
+        if(dtos != null){
+            return dtos;
+        }else{
+            new NoSuchOrderException(ErrorCode.ORDER_NOT_FOUND);
+        }
+        return dtos;
     }
 
     public void save(OrderDto orderDto){
 
         // 해당 가게가 있을 때
         Store store  = storeRepository.findById(orderDto.getStore().getStoreId()).orElseThrow(()
-                -> new NoSuchElementException("해당 가게가 없습니다."));
+                -> new NoSuchStoreException(ErrorCode.STORE_NOT_FOUND));
 
         if(store != null){
             List<OrderLine> orderLines = new ArrayList<>();
 
             for (OrderLineDto orderLineDto : orderDto.getOrderLines()) {
                 Integer foodId = orderLineDto.getFoodId();
-                log.info("foodId: {}", foodId);
 
                 Food food = foodRepository.findById(foodId).orElseThrow(()
-                        -> new NoSuchElementException("해당 음식이 없습니다."));
+                        -> new NoSuchFoodException(ErrorCode.FOOD_NOT_FOUND));
 
                 // 가격 확인
                 int unitPrice = food.getPrice();
                 orderLineDto.setUnitPrice(unitPrice);
-                log.info("unitPrice: {}", unitPrice);
 
                 // 주문 항목 소계 계산
                 int subtotal = orderLineDto.calculateSubtotal();
@@ -88,10 +108,9 @@ public class OrderService{
 
     public OrderStatus acceptOrder(Integer id) {
         Order order = orderRepository.findById(id).orElseThrow(()
-                -> new NoSuchElementException("요청하신 주문을 찾을 수 없습니다."));
+                -> new NoSuchOrderException(ErrorCode.ORDER_NOT_FOUND));
 
         order.approve();
-
         orderRepository.save(order);
 
         return order.getOrderStatus();
@@ -99,10 +118,9 @@ public class OrderService{
 
     public OrderStatus cancelOrder(Integer id) {
         Order order = orderRepository.findById(id).orElseThrow(()
-                -> new NoSuchElementException("요청하신 주문을 찾을 수 없습니다."));
+                -> new NoSuchOrderException(ErrorCode.ORDER_NOT_FOUND));
 
         order.cancel();
-
         orderRepository.save(order);
 
         return order.getOrderStatus();
@@ -110,10 +128,9 @@ public class OrderService{
 
     public OrderStatus rejectOrder(Integer id) {
         Order order = orderRepository.findById(id).orElseThrow(()
-                -> new NoSuchElementException("요청하신 주문을 찾을 수 없습니다."));
+                -> new NoSuchOrderException(ErrorCode.ORDER_NOT_FOUND));
 
         order.reject();
-
         orderRepository.save(order);
 
         return order.getOrderStatus();

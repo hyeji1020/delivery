@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -17,6 +18,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig{
 
     private final AuthenticationConfiguration authenticationConfiguration;
@@ -49,7 +51,6 @@ public class SecurityConfig{
                 .formLogin((login) -> login
                         .usernameParameter("email"));
 
-
         //http basic 인증 방식 disable
         http
                 .httpBasic((auth) -> auth.disable());
@@ -57,8 +58,8 @@ public class SecurityConfig{
         //경로별 인가 작업
         http
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers(new AntPathRequestMatcher("/api/users/**")).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/admin")).hasRole("ADMIN")
+                        .antMatchers(("/api/users/**")).permitAll()
+                        .antMatchers(("/admin")).hasRole("OWNER")
                         .anyRequest().authenticated());
 
         //세션 설정
@@ -79,20 +80,4 @@ public class SecurityConfig{
         return http.build();
     }
 
-//    @Autowired
-//    UserService userService;
-
-//    @Override
-//    protected void configure(HttpSecurity http) throws Exception {
-//        http.csrf().disable();
-//    }
-
-
-
-//    @Override
-//    protected void configure(AuthenticationManagerBuilder auth)
-//            throws Exception {
-//        auth.userDetailsService(userService)
-//                .passwordEncoder(passwordEncoder());
-//    }
 }

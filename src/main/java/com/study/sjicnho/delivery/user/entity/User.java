@@ -1,7 +1,6 @@
 package com.study.sjicnho.delivery.user.entity;
 
 import com.study.sjicnho.delivery.order.entity.Order;
-import com.study.sjicnho.delivery.user.RoleType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -34,7 +33,7 @@ public class User {
     private String password;
 
     @Enumerated(EnumType.STRING)
-    private RoleType roleType;
+    private UserRole userRole;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Order> orders = new ArrayList<>();

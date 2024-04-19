@@ -2,7 +2,7 @@ package com.study.sjicnho.delivery.user.controller;
 
 import com.study.sjicnho.delivery.user.service.UserService;
 import com.study.sjicnho.delivery.user.dto.UserDto;
-import com.study.sjicnho.delivery.user.entity.User;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
@@ -18,33 +18,31 @@ public class UserController {
     }
 
     @GetMapping
-    public List<User> getAll(){
+    public List<UserDto> getAll(){
         return userService.getAll();
     }
 
     @GetMapping("/{id}")
-    public User getById(@PathVariable Integer id){
+    public UserDto getById(@PathVariable Integer id){
          return userService.getById(id);
     }
 
+    //회원가입
     @PostMapping("/signup")
-    public void create(@Valid @RequestBody UserDto userDto){
-            userService.signUpProcess(userDto);
+    public void signUp(@Valid @RequestBody UserDto userDto){
+            userService.signUp(userDto);
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('CUSTOMER', 'OWNER')")
     public void update(@PathVariable Integer id,@Valid @RequestBody UserDto userDto){
         userService.update(id, userDto);
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('CUSTOMER', 'OWNER')")
     public void delete(@PathVariable Integer id){
         userService.delete(id);
     }
-
-//    @PostMapping("/login")
-//    public void loginUser(@RequestBody UserDto userDto) {
-//        userService.login(userDto);
-//    }
 
 }

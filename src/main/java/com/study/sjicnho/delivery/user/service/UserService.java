@@ -1,15 +1,15 @@
 package com.study.sjicnho.delivery.user.service;
 
 import com.study.sjicnho.delivery.ErrorCode;
-import com.study.sjicnho.delivery.store.exception.NoSuchStore;
 import com.study.sjicnho.delivery.user.entity.UserRole;
-import com.study.sjicnho.delivery.user.exception.NoSuchUser;
+import com.study.sjicnho.delivery.user.exception.NoSuchUserException;
 import com.study.sjicnho.delivery.user.repository.UserRepository;
 import com.study.sjicnho.delivery.user.dto.UserDto;
 import com.study.sjicnho.delivery.user.entity.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -47,13 +47,31 @@ public class UserService{
     }
 
 
-    public List<User> getAll() {
-        return userRepository.findAll();
+    public List<UserDto> getAll() {
+        //전체 데이터 가져오기
+        List<User> users = userRepository.findAll();
+
+        List<UserDto> dtos = new ArrayList<UserDto>();
+
+        //Entity->DTO
+        for(int i = 0; i< users.size(); i++){
+            User target = users.get(i);
+            UserDto dto = UserDto.createFromEntity(target);
+            dtos.add(dto);
+        }
+
+        if(dtos != null){
+            return dtos;
+        }else{
+            new NoSuchUserException(ErrorCode.USER_NOT_FOUND);
+        }
+        return dtos;
     }
 
-    public User getById(Integer id) {
-        return userRepository.findById(id)
-                .orElseThrow(() -> new NoSuchUser(ErrorCode.USER_NOT_FOUND));
+    public UserDto getById(Integer id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new NoSuchUserException(ErrorCode.USER_NOT_FOUND));
+        return UserDto.createFromEntity(user);
     }
 
     public void update(Integer id, UserDto dto) {
@@ -64,7 +82,7 @@ public class UserService{
         User user = dto.toEntity();
 
         User target = userRepository.findById(id)
-                .orElseThrow(() -> new NoSuchUser(ErrorCode.USER_NOT_FOUND));
+                .orElseThrow(() -> new NoSuchUserException(ErrorCode.USER_NOT_FOUND));
 
         if(target != null){
             userRepository.save(user);
@@ -74,7 +92,7 @@ public class UserService{
     public void delete(Integer id) {
 
         User target = userRepository.findById(id)
-                .orElseThrow(() -> new NoSuchUser(ErrorCode.USER_NOT_FOUND));
+                .orElseThrow(() -> new NoSuchUserException(ErrorCode.USER_NOT_FOUND));
         if(target != null){
             userRepository.deleteById(id);
         }

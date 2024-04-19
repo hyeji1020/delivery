@@ -27,7 +27,6 @@ public class OrderLine {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "food_id")
-  //  @JsonIgnore
     private Food food; // 주문한 음식
 
     private int quantity;

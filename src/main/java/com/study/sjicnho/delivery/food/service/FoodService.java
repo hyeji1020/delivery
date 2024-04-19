@@ -1,18 +1,15 @@
 package com.study.sjicnho.delivery.food.service;
 
 import com.study.sjicnho.delivery.ErrorCode;
-import com.study.sjicnho.delivery.food.controller.FoodResponseDto;
 import com.study.sjicnho.delivery.food.entity.Food;
-import com.study.sjicnho.delivery.food.exception.NoSuchFood;
+import com.study.sjicnho.delivery.food.exception.NoSuchFoodException;
 import com.study.sjicnho.delivery.food.repository.FoodJpaRepository;
 import com.study.sjicnho.delivery.food.dto.FoodDto;
 import com.study.sjicnho.delivery.order.repository.OrderLineRepository;
-import com.study.sjicnho.delivery.store.dto.StoreDto;
 import com.study.sjicnho.delivery.store.entity.Store;
 import com.study.sjicnho.delivery.store.repository.StoreRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -33,12 +30,12 @@ public class FoodService {
 
 
     // 음식 목록 조회
-    public List<FoodDto> getFoods(Food food) {
-
-        List<FoodDto> dtos = new ArrayList<FoodDto>();
+    public List<FoodDto> getFoods() {
 
         //전체 데이터 가져오기
         List<Food> foods = foodJpaRepository.findAll();
+
+        List<FoodDto> dtos = new ArrayList<FoodDto>();
 
         //Entity->DTO
         for(int i = 0; i< foods.size(); i++){
@@ -50,7 +47,7 @@ public class FoodService {
         if(dtos != null){
             return dtos;
         }else{
-            new NoSuchElementException("존재하지 않습니다.");
+            new NoSuchFoodException(ErrorCode.FOOD_NOT_FOUND);
         }
         return dtos;
     }
@@ -59,10 +56,9 @@ public class FoodService {
     public FoodDto findById(Integer foodId) {
 
         Food food = foodJpaRepository.findById(foodId).orElseThrow(() ->
-                new NoSuchFood(ErrorCode.FOOD_NOT_FOUND));
+                new NoSuchFoodException(ErrorCode.FOOD_NOT_FOUND));
 
         FoodDto dto = FoodDto.createFromEntity(food);
-        log.info("foodservice:dto={}", dto);
 
         return dto;
 
@@ -70,7 +66,7 @@ public class FoodService {
 
     private Food findFoodById(Integer foodId) {
         return foodJpaRepository.findById(foodId)
-                .orElseThrow(() -> new NoSuchFood(ErrorCode.FOOD_NOT_FOUND));
+                .orElseThrow(() -> new NoSuchFoodException(ErrorCode.FOOD_NOT_FOUND));
     }
 
     // 음식 등록
@@ -81,11 +77,9 @@ public class FoodService {
 
         //DTO->Entity 변환
         Food food = dto.toEntity();
-        log.info("foodservice:food={}", food);
 
         //가게 설정
         dto.setStore(store);
-        log.info("storeDto={}", store);
 
         //repository에 저장
         return foodJpaRepository.save(food);
@@ -99,31 +93,23 @@ public class FoodService {
 
         //DTO->Entity
         Food data = dto.toEntity();
-        log.info("data={}", data);
 
         //음식아이디 확인 후 수정
-        Food target = foodJpaRepository.findById(foodId).orElseThrow(null);
+        Food target = foodJpaRepository.findById(foodId)
+                .orElseThrow(() -> new NoSuchFoodException(ErrorCode.FOOD_NOT_FOUND));
 
-        if(target != null){
-            foodJpaRepository.save(data);
-        }else{
-            new NoSuchFood(ErrorCode.FOOD_NOT_FOUND);
-        }
+        foodJpaRepository.save(data);
+
         return data;
     }
 
     // 음식 삭제
     public void deleteFood(Integer foodId) {
 
-        //해당아이디 게시글 확인 후 삭제
-        Food target = foodJpaRepository.getById(foodId);
+        //음식아이디 확인 후 삭제
+        Food target = foodJpaRepository.findById(foodId)
+                .orElseThrow(() -> new NoSuchFoodException(ErrorCode.FOOD_NOT_FOUND));
 
-        if (target != null) {
-             foodJpaRepository.deleteById(foodId);
-        }else{
-            new NoSuchFood(ErrorCode.FOOD_NOT_FOUND);
-        }
+        foodJpaRepository.deleteById(foodId);
     }
-
-
 }

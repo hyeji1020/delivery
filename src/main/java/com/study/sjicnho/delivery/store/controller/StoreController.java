@@ -1,11 +1,14 @@
-package com.study.sjicnho.delivery.store;
+package com.study.sjicnho.delivery.store.controller;
 
 
+import com.study.sjicnho.delivery.store.service.StoreService;
+import com.study.sjicnho.delivery.store.dto.StoreDto;
+import com.study.sjicnho.delivery.store.entity.Store;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.xml.ws.Response;
 import java.util.List;
 
 @RestController
@@ -20,6 +23,7 @@ public class StoreController {
 
     //가게 등록
     @PostMapping
+    @PreAuthorize("hasAnyAuthority('OWNER')")
     public ResponseEntity<Store> save(@Valid @RequestBody StoreDto storeDto){
         storeService.save(storeDto);
         return ResponseEntity.ok().build();
@@ -27,27 +31,31 @@ public class StoreController {
 
     //가게 리스트 조회
     @GetMapping
-    public ResponseEntity<List<Store>> getStores(){
-        List<Store> stores = storeService.getStores();
-        return ResponseEntity.ok().body(stores);
+    @PreAuthorize("hasAnyAuthority('CUSTOMER', 'OWNER')")
+    public ResponseEntity<List<StoreDto>> getStores(){
+        List<StoreDto> stores = storeService.getStores();
+        return ResponseEntity.ok(stores);
     }
 
     //가게 상세 조회
     @GetMapping("/{id}")
-    public ResponseEntity<Store> findById(@PathVariable Integer id){
-        Store store = storeService.findById(id);
-        return ResponseEntity.ok().body(store);
+    @PreAuthorize("hasAnyAuthority('CUSTOMER', 'OWNER')")
+    public ResponseEntity<StoreDto> findById(@PathVariable Integer id){
+        StoreDto dto = storeService.findById(id);
+        return ResponseEntity.ok(dto);
     }
 
     //가게 수정
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('OWNER')")
     public ResponseEntity<Store> updateStore(@PathVariable Integer id, @Valid @RequestBody StoreDto storeDto){
         Store updated = storeService.updateStore(id, storeDto);
-        return ResponseEntity.ok().body(updated);
+        return ResponseEntity.ok(updated);
     }
 
     //가게 삭제
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('OWNER')")
     public ResponseEntity<Void> deleteStore(@PathVariable Integer id){
         storeService.deleteStore(id);
         return ResponseEntity.ok().build();

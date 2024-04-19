@@ -1,10 +1,8 @@
 package com.study.sjicnho.delivery.user.dto;
 
-import com.study.sjicnho.delivery.user.RoleType;
+import com.study.sjicnho.delivery.user.entity.UserRole;
 import com.study.sjicnho.delivery.user.entity.User;
 import lombok.*;
-import org.springframework.security.crypto.password.PasswordEncoder;
-
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
@@ -30,7 +28,7 @@ public class UserDto {
             message = "비밀번호는 영문 대,소문자와 숫자, 특수기호가 적어도 1개 이상씩 포함된 8자 ~ 20자의 비밀번호여야 합니다.")
     private String password;
 
-    private RoleType roleType;
+    private UserRole userRole;
 
 
     //DTO -> Entity
@@ -40,7 +38,7 @@ public class UserDto {
                 .name(name)
                 .email(email)
                 .password(password)
-                .roleType(roleType)
+                .userRole(userRole)
                 .build();
     }
 
@@ -51,7 +49,7 @@ public class UserDto {
                 .name(user.getName())
                 .email(user.getEmail())
                 .password(user.getPassword())
-                .roleType(user.getRoleType())
+                .userRole(user.getUserRole())
                 .build();
     }
 }

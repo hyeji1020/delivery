@@ -4,11 +4,12 @@ import com.study.sjicnho.delivery.food.dto.FoodDto;
 import com.study.sjicnho.delivery.food.entity.Food;
 import com.study.sjicnho.delivery.food.service.FoodService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
+import javax.validation.Valid;
 import java.util.List;
+
 
 @Slf4j
 @RestController
@@ -16,66 +17,56 @@ import java.util.List;
 public class FoodController {
 
         private final FoodService foodService;
-
         public FoodController(FoodService foodService) {
             this.foodService = foodService;
         }
 
         //음식 목록 조회
         @GetMapping
-        public ResponseEntity<List<FoodDto>> getFoods(Food food){
+        @PreAuthorize("hasAnyAuthority('CUSTOMER', 'OWNER')")
+        public ResponseEntity<List<FoodDto>> getFoods(){
 
-            List<FoodDto> dtoList = foodService.getFoods(food);
+            List<FoodDto> dtoList = foodService.getFoods();
+            return ResponseEntity.ok(dtoList);
 
-            if (dtoList != null) {
-                return ResponseEntity.ok().body(dtoList);
-            } else {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-
-            }
         }
-
 
         //음식 상세 조회
         @GetMapping("/{foodId}")
+        @PreAuthorize("hasAnyAuthority('CUSTOMER', 'OWNER')")
         public ResponseEntity<FoodDto> getFoodById(@PathVariable Integer foodId){
 
             FoodDto foodDto = foodService.findById(foodId);
-            log.info("foodDto={}", foodDto);
-
-            if (foodDto != null) {
-                return ResponseEntity.ok(foodDto);
-            } else {
-                return ResponseEntity.notFound().build();
-            }
+            return ResponseEntity.ok(foodDto);
 
         }
 
         //음식 등록
         @PostMapping
-        public ResponseEntity<Food> createFood(@RequestBody FoodDto foodDto){
-            Food food = foodService.save(foodDto);
+        @PreAuthorize("hasAnyAuthority('OWNER')")
+        public ResponseEntity<Food> createFood(@Valid @RequestBody FoodDto foodDto){
 
+            Food food = foodService.save(foodDto);
             return ResponseEntity.ok(food);
         }
 
         //음식 수정
         @PutMapping("/{foodId}")
-        public ResponseEntity<Food> updateFood(@PathVariable Integer foodId, @RequestBody FoodDto foodDto){
+        @PreAuthorize("hasAnyAuthority('OWNER')")
+        public ResponseEntity<Food> updateFood( @PathVariable Integer foodId, @Valid @RequestBody FoodDto foodDto){
 
             Food updated = foodService.updateFood(foodId, foodDto);
-
             return ResponseEntity.ok(updated);
 
         }
 
         //음식 삭제
         @DeleteMapping("/{foodId}")
+        @PreAuthorize("hasAnyAuthority('OWNER')")
         public ResponseEntity<Void> deleteFood(@PathVariable Integer foodId) {
 
             foodService.deleteFood(foodId);
-
-            return new ResponseEntity<>(HttpStatus.OK);
+            return ResponseEntity.ok().build();
         }
     }
 

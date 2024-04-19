@@ -38,9 +38,6 @@ public class Order {
     @JsonIgnore
     private Store store;
 
-//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "order")
-//    private List<OrderLine> orderLines = new ArrayList<>();
-
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "order_id")
     @JsonIgnore
@@ -84,7 +81,6 @@ public class Order {
 
         throw new IllegalStateException();
     }
-
 
     @PrePersist
     public void onPrePersist() {

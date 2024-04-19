@@ -1,5 +1,6 @@
-package com.study.sjicnho.delivery.store;
+package com.study.sjicnho.delivery.store.dto;
 
+import com.study.sjicnho.delivery.store.entity.Store;
 import lombok.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;

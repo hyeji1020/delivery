@@ -1,4 +1,4 @@
-package com.study.sjicnho.delivery.food.exception;
+package com.study.sjicnho.delivery;
 
 import com.study.sjicnho.delivery.ErrorCode;
 

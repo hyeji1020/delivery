@@ -1,6 +1,5 @@
 package com.study.sjicnho.delivery.jwt;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.study.sjicnho.delivery.user.dto.UserDto;
 import com.study.sjicnho.delivery.user.service.CustomUserDetails;
@@ -47,10 +46,10 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        System.out.println(userDto.getEmail());
 
         String email = userDto.getEmail();
         String password = userDto.getPassword();
+        Integer id = userDto.getUserId();
 
         //스프링 시큐리티에서 username과 password를 검증하기 위해서는 token에 담아야 함(인증용 객체 생성)
         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(email, password, null);
@@ -84,8 +83,10 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
         String role = auth.getAuthority();
 
+        String id = customUserDetails.getId();
+
         // JWT 생성
-        String token = jwtUtil.createJwt(email, role, 60*60*10L);
+        String token = jwtUtil.createJwt(email, role, id, 60*60*10L);
         
         // "Bearer " : Authorization 인증 방식_띄어쓰기 주의
         response.addHeader("Authorization", "Bearer " + token);

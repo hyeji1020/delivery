@@ -1,9 +1,9 @@
 package com.study.sjicnho.delivery.food.dto;
 
 import com.study.sjicnho.delivery.food.entity.Food;
-import com.study.sjicnho.delivery.store.Store;
+import com.study.sjicnho.delivery.store.dto.StoreDto;
+import com.study.sjicnho.delivery.store.entity.Store;
 import lombok.*;
-
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
@@ -26,6 +26,15 @@ public class FoodDto {
 
     private Store store;
 
+    //Entity -> DTO
+    public static FoodDto createFromEntity(Food food) {
+        return FoodDto.builder()
+                .foodId(food.getFoodId())
+                .name(food.getName())
+                .price(food.getPrice())
+                .store(food.getStore())
+                .build();
+    }
 
     //DTO -> Entity
     public Food toEntity(){
@@ -37,14 +46,4 @@ public class FoodDto {
                 .build();
     }
 
-    //Entity -> DTO
-    public static FoodDto createFromEntity(Food food) {
-        return FoodDto.builder()
-                .foodId(food.getFoodId())
-                .name(food.getName())
-                .price(food.getPrice())
-                .store(food.getStore())
-                .build();
-    }
-    // BeanUtils.copyProperties()
 }

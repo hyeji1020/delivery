@@ -1,16 +1,10 @@
 package com.study.sjicnho.delivery.order.dto;
 
 import com.study.sjicnho.delivery.food.entity.Food;
-import com.study.sjicnho.delivery.order.entity.Order;
 import com.study.sjicnho.delivery.order.entity.OrderLine;
-import com.study.sjicnho.delivery.payment.PaymentOption;
 import lombok.*;
-
-import javax.persistence.criteria.CriteriaBuilder;
 import javax.validation.constraints.Min;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.Function;
+
 
 @Getter
 @NoArgsConstructor
