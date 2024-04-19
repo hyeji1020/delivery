@@ -1,11 +1,10 @@
-package com.study.sjicnho.delivery.store.exception;
+package com.study.sjicnho.delivery.user.exception;
 
 import com.study.sjicnho.delivery.ErrorCode;
 import com.study.sjicnho.delivery.food.exception.BaseException;
 
-public class NoSuchStore extends BaseException {
-
-    public NoSuchStore(ErrorCode errorCode) {
+public class NoSuchUserException extends BaseException {
+    public NoSuchUserException(ErrorCode errorCode) {
         super(errorCode.getMessage(), errorCode);
     }
 }
