@@ -10,7 +10,7 @@
 <img src="https://img.shields.io/badge/Postman-FF6C37?style=flat&logo=postman&logoColor=white"/>
 <img src="https://img.shields.io/badge/IntelliJ-A100FF?style=flat&logo=intellijidea&logoColor=white"/>
 
-## 기술
+## 구현 기능
 1. 회원가입
 * 이름, 이메일(아이디), 비밀번호, 권한(OWNER, CUSTOMER)
      
@@ -49,7 +49,7 @@
 
 ------------
 ### DB 테이블 설계
-!![image](https://github.com/hyeji1020/delivery/assets/148170765/953c517f-be5f-49ca-8b87-8b4be404faa2)
+![image](https://github.com/hyeji1020/delivery/assets/148170765/953c517f-be5f-49ca-8b87-8b4be404faa2)
 
 
 
