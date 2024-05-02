@@ -4,5 +4,4 @@ public enum PaymentOption {
     //현금, 카드
     CASH, CARD
 
-
 }
