@@ -5,6 +5,7 @@ import com.study.sjicnho.delivery.store.dto.StoreDto;
 import com.study.sjicnho.delivery.store.entity.Store;
 import lombok.*;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @ToString
@@ -17,10 +18,10 @@ public class FoodDto {
 
     private Integer foodId;
 
-    @NotNull
+    @NotBlank(message = "음식명은 필수 입력 값입니다.")
     private String name;
 
-    @NotNull(message = "전화번호는 필수 입력 값입니다.")
+    @NotNull(message = "가격은 필수 입력 값입니다.")
     @Min(0)
     private int price;
 

@@ -17,7 +17,7 @@ public class StoreDto {
     @NotBlank(message = "가게명은 필수 입력 값입니다.")
     private String name;
 
-    @NotNull(message = "주소는 필수 입력 값입니다.")
+    @NotBlank(message = "주소는 필수 입력 값입니다.")
     private String address;
 
     @NotBlank(message = "전화번호는 필수 입력 값입니다.")
