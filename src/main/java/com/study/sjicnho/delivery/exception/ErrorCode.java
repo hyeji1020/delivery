@@ -1,4 +1,4 @@
-package com.study.sjicnho.delivery;
+package com.study.sjicnho.delivery.exception;
 
 import lombok.Getter;
 import org.springframework.http.HttpStatus;

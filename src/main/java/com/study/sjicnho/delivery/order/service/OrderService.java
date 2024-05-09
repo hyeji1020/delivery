@@ -1,6 +1,6 @@
 package com.study.sjicnho.delivery.order.service;
 
-import com.study.sjicnho.delivery.ErrorCode;
+import com.study.sjicnho.delivery.exception.ErrorCode;
 import com.study.sjicnho.delivery.food.entity.Food;
 import com.study.sjicnho.delivery.food.exception.NoSuchFoodException;
 import com.study.sjicnho.delivery.food.repository.FoodJpaRepository;

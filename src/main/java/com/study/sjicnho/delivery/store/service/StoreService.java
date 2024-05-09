@@ -1,9 +1,6 @@
 package com.study.sjicnho.delivery.store.service;
 
-import com.study.sjicnho.delivery.ErrorCode;
-import com.study.sjicnho.delivery.food.dto.FoodDto;
-import com.study.sjicnho.delivery.food.entity.Food;
-import com.study.sjicnho.delivery.food.exception.NoSuchFoodException;
+import com.study.sjicnho.delivery.exception.ErrorCode;
 import com.study.sjicnho.delivery.store.dto.StoreDto;
 import com.study.sjicnho.delivery.store.entity.Store;
 import com.study.sjicnho.delivery.store.exception.NoSuchStoreException;

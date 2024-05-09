@@ -1,6 +1,6 @@
 package com.study.sjicnho.delivery.user.service;
 
-import com.study.sjicnho.delivery.ErrorCode;
+import com.study.sjicnho.delivery.exception.ErrorCode;
 import com.study.sjicnho.delivery.user.entity.UserRole;
 import com.study.sjicnho.delivery.user.exception.NoSuchUserException;
 import com.study.sjicnho.delivery.user.repository.UserRepository;

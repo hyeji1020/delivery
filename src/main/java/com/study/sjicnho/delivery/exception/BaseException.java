@@ -1,6 +1,4 @@
-package com.study.sjicnho.delivery;
-
-import com.study.sjicnho.delivery.ErrorCode;
+package com.study.sjicnho.delivery.exception;
 
 public class BaseException extends RuntimeException{
 
