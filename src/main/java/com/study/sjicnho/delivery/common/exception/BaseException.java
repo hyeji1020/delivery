@@ -1,4 +1,4 @@
-package com.study.sjicnho.delivery.exception;
+package com.study.sjicnho.delivery.common.exception;
 
 public class BaseException extends RuntimeException{
 

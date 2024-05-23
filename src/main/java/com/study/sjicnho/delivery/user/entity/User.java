@@ -38,10 +38,11 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Order> orders = new ArrayList<>();
 
+
     public void encodePassword(PasswordEncoder passwordEncoder){
         this.password = passwordEncoder.encode(password);
     }
-    public User(Integer userId, String name,String password) {
+    public User(Integer userId, String name, String password) {
         this.userId = userId;
         this.name = name;
         this.password = password;

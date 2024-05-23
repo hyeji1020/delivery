@@ -1,6 +1,6 @@
 package com.study.sjicnho.delivery.store.service;
 
-import com.study.sjicnho.delivery.exception.ErrorCode;
+import com.study.sjicnho.delivery.common.exception.ErrorCode;
 import com.study.sjicnho.delivery.store.dto.StoreDto;
 import com.study.sjicnho.delivery.store.entity.Store;
 import com.study.sjicnho.delivery.store.exception.NoSuchStoreException;
@@ -31,21 +31,18 @@ public class StoreService {
 
         //전체 데이터 가져오기
         List<Store> stores = storeRepository.findAll();
+        List<StoreDto> dtos = new ArrayList<>();
 
-        List<StoreDto> dtos = new ArrayList<StoreDto>();
-
-        //Entity->DTO
-        for(int i = 0; i< stores.size(); i++){
-            Store target = stores.get(i);
-            StoreDto dto = StoreDto.createFromEntity(target);
+        // Entity -> DTO 변환
+        for (Store store : stores) {
+            StoreDto dto = StoreDto.createFromEntity(store);
             dtos.add(dto);
         }
 
-        if(dtos != null){
-            return dtos;
-        }else{
-            new NoSuchStoreException(ErrorCode.STORE_NOT_FOUND);
+        if (dtos.isEmpty()) {
+            throw new NoSuchStoreException(ErrorCode.STORE_NOT_FOUND);
         }
+
         return dtos;
     }
 

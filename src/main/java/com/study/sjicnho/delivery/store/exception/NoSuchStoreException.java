@@ -1,7 +1,7 @@
 package com.study.sjicnho.delivery.store.exception;
 
-import com.study.sjicnho.delivery.exception.ErrorCode;
-import com.study.sjicnho.delivery.exception.BaseException;
+import com.study.sjicnho.delivery.common.exception.ErrorCode;
+import com.study.sjicnho.delivery.common.exception.BaseException;
 
 public class NoSuchStoreException extends BaseException {
 

@@ -31,7 +31,7 @@ public class StoreController {
 
     //가게 리스트 조회
     @GetMapping
-    @PreAuthorize("hasAnyAuthority('CUSTOMER', 'OWNER')")
+    //@PreAuthorize("hasAnyAuthority('CUSTOMER', 'OWNER')")
     public ResponseEntity<List<StoreDto>> getStores(){
         List<StoreDto> stores = storeService.getStores();
         return ResponseEntity.ok(stores);

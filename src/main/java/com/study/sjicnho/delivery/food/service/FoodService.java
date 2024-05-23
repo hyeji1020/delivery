@@ -1,6 +1,6 @@
 package com.study.sjicnho.delivery.food.service;
 
-import com.study.sjicnho.delivery.exception.ErrorCode;
+import com.study.sjicnho.delivery.common.exception.ErrorCode;
 import com.study.sjicnho.delivery.food.entity.Food;
 import com.study.sjicnho.delivery.food.exception.NoSuchFoodException;
 import com.study.sjicnho.delivery.food.repository.FoodJpaRepository;
@@ -13,7 +13,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Objects;
 
 @Slf4j

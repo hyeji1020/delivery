@@ -1,6 +1,6 @@
 package com.study.sjicnho.delivery.user.service;
 
-import com.study.sjicnho.delivery.exception.ErrorCode;
+import com.study.sjicnho.delivery.common.exception.ErrorCode;
 import com.study.sjicnho.delivery.user.entity.UserRole;
 import com.study.sjicnho.delivery.user.exception.NoSuchUserException;
 import com.study.sjicnho.delivery.user.repository.UserRepository;
@@ -9,6 +9,7 @@ import com.study.sjicnho.delivery.user.entity.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,7 +46,6 @@ public class UserService{
 
         return userRepository.save(data);
     }
-
 
     public List<UserDto> getAll() {
         //전체 데이터 가져오기
