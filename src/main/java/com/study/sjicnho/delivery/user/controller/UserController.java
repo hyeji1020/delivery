@@ -30,7 +30,7 @@ public class UserController {
     //회원가입
     @PostMapping("/signup")
     public void signUp(@Valid @RequestBody UserDto userDto){
-            userService.signUp(userDto);
+        userService.signUp(userDto);
     }
 
     @PutMapping("/{id}")

@@ -42,10 +42,13 @@ public class User {
     public void encodePassword(PasswordEncoder passwordEncoder){
         this.password = passwordEncoder.encode(password);
     }
-    public User(Integer userId, String name, String password) {
+
+    public User(Integer userId, String name, String email, String password, UserRole userRole) {
         this.userId = userId;
         this.name = name;
+        this.email = email;
         this.password = password;
+        this.userRole = userRole;
     }
 
 }
