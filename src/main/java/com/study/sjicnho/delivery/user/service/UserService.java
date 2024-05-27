@@ -1,12 +1,13 @@
 package com.study.sjicnho.delivery.user.service;
 
 import com.study.sjicnho.delivery.common.exception.ErrorCode;
-import com.study.sjicnho.delivery.user.entity.UserRole;
+import com.study.sjicnho.delivery.user.exception.DuplicateEmailException;
 import com.study.sjicnho.delivery.user.exception.NoSuchUserException;
 import com.study.sjicnho.delivery.user.repository.UserRepository;
 import com.study.sjicnho.delivery.user.dto.UserDto;
 import com.study.sjicnho.delivery.user.entity.User;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -25,46 +26,28 @@ public class UserService{
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
-    public User signUp(UserDto userDto) {
-
+    public Integer signUp(UserDto userDto) {
         String username = userDto.getEmail();
-        String password = userDto.getPassword();
-        String name = userDto.getName();
-        UserRole role = userDto.getUserRole();
-
-        Boolean isExist = userRepository.existsByEmail(username);
-
-        if (isExist) {
-            throw new RuntimeException("이미 가입되어 있는 이메일입니다.");
+        if (userRepository.existsByEmail(username)) {
+            throw new DuplicateEmailException();
         }
 
-        userDto.setEmail(username);
-        userDto.setPassword(bCryptPasswordEncoder.encode(password));
-        userDto.setUserRole(role);
-        userDto.setName(name);
+        userDto.setPassword(bCryptPasswordEncoder.encode(userDto.getPassword()));
         User data = userDto.toEntity();
 
-        return userRepository.save(data);
+        User savedUser = userRepository.save(data);
+        return savedUser.getUserId();
+
     }
 
     public List<UserDto> getAll() {
-        //전체 데이터 가져오기
         List<User> users = userRepository.findAll();
+        List<UserDto> dtos = new ArrayList<>();
 
-        List<UserDto> dtos = new ArrayList<UserDto>();
-
-        //Entity->DTO
-        for(int i = 0; i< users.size(); i++){
-            User target = users.get(i);
-            UserDto dto = UserDto.createFromEntity(target);
-            dtos.add(dto);
+        for (User user : users) {
+            dtos.add(UserDto.createFromEntity(user));
         }
 
-        if(dtos != null){
-            return dtos;
-        }else{
-            new NoSuchUserException(ErrorCode.USER_NOT_FOUND);
-        }
         return dtos;
     }
 
@@ -75,26 +58,18 @@ public class UserService{
     }
 
     public void update(Integer id, UserDto dto) {
-
-        dto.setUserId(id);
-
-        //DTO->Entity
-        User user = dto.toEntity();
-
-        User target = userRepository.findById(id)
+        userRepository.findById(id)
                 .orElseThrow(() -> new NoSuchUserException(ErrorCode.USER_NOT_FOUND));
 
-        if(target != null){
-            userRepository.save(user);
-        }
+        dto.setUserId(id);
+        User user = dto.toEntity();
+        userRepository.save(user);
     }
 
     public void delete(Integer id) {
-
-        User target = userRepository.findById(id)
+        userRepository.findById(id)
                 .orElseThrow(() -> new NoSuchUserException(ErrorCode.USER_NOT_FOUND));
-        if(target != null){
-            userRepository.deleteById(id);
-        }
+
+        userRepository.deleteById(id);
     }
 }
