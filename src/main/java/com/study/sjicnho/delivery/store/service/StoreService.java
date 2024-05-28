@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -28,47 +29,31 @@ public class StoreService {
 
     //가게 리스트 조회
     public List<StoreDto> getStores(){
-
-        //전체 데이터 가져오기
         List<Store> stores = storeRepository.findAll();
-        List<StoreDto> dtos = new ArrayList<>();
-
-        // Entity -> DTO 변환
-        for (Store store : stores) {
-            StoreDto dto = StoreDto.createFromEntity(store);
-            dtos.add(dto);
-        }
-
-        if (dtos.isEmpty()) {
+        if (stores.isEmpty()) {
             throw new NoSuchStoreException(ErrorCode.STORE_NOT_FOUND);
         }
-
-        return dtos;
+        return stores.stream()
+                .map(StoreDto::createFromEntity)
+                .collect(Collectors.toList());
     }
 
     //가게 상세 조회
     public StoreDto findById(Integer id){
         Store store =  storeRepository.findById(id)
                 .orElseThrow(() -> new NoSuchStoreException(ErrorCode.STORE_NOT_FOUND));
-
-        StoreDto dto = StoreDto.createFromEntity(store);
-
-        return dto;
+        return StoreDto.createFromEntity(store);
     }
 
     public Store updateStore(Integer id, StoreDto storeDto) {
-
         storeRepository.findById(id)
                 .orElseThrow(() -> new NoSuchStoreException(ErrorCode.STORE_NOT_FOUND));
 
         storeDto.setStoreId(id);
-        storeRepository.save(storeDto.toEntity());
-
         return storeRepository.save(storeDto.toEntity());
     }
 
     public void deleteStore(Integer id) {
-
         Store store = storeRepository.findById(id)
                 .orElseThrow(() -> new NoSuchStoreException(ErrorCode.STORE_NOT_FOUND));
 

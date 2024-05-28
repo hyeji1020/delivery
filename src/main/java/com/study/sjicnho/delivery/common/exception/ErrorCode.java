@@ -14,9 +14,6 @@ public enum ErrorCode {
     STORE_NOT_FOUND(NOT_FOUND, "해당 음식점이 존재하지 않습니다."),
     FOOD_NOT_FOUND(NOT_FOUND, "해당 음식이 존재하지 않습니다.");
 
-
-
-
     private final HttpStatus httpStatus;
     private final String message;
 

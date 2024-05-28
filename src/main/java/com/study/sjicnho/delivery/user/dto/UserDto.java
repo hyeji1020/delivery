@@ -1,5 +1,6 @@
 package com.study.sjicnho.delivery.user.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.study.sjicnho.delivery.user.entity.UserRole;
 import com.study.sjicnho.delivery.user.entity.User;
 import lombok.*;

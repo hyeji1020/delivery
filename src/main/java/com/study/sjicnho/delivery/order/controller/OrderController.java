@@ -26,8 +26,8 @@ public class OrderController {
     // 주문 조회
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('CUSTOMER', 'OWNER')")
-    public ResponseEntity<OrderDto> findById(@PathVariable Integer id){
-        OrderDto orderDto = orderService.findById(id);
+    public ResponseEntity<OrderDto> findOrderById(@PathVariable Integer id){
+        OrderDto orderDto = orderService.findOrderById(id);
         return ResponseEntity.ok(orderDto);
     }
 
@@ -42,9 +42,9 @@ public class OrderController {
     // 주문 등록
     @PostMapping
     @PreAuthorize("hasAnyAuthority('CUSTOMER')")
-    public ResponseEntity<Order> save(@Valid @RequestBody OrderDto orderDto){
-        orderService.save(orderDto);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<OrderDto> save(@Valid @RequestBody OrderDto orderDto){
+        OrderDto savedOrderDto = orderService.save(orderDto);
+        return ResponseEntity.ok(savedOrderDto);
     }
 
     //주문 수락

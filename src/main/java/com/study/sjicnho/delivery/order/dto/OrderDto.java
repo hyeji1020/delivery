@@ -22,7 +22,6 @@ public class OrderDto {
     private List<OrderLineDto> orderLines;
     private Store store;
 
-    @NotNull
     private int totalAmount;
 
     private PaymentOption paymentOption;
@@ -58,18 +57,13 @@ public class OrderDto {
                 .orderDate(order.getOrderDate())
                 .store(order.getStore())
                 .orderLines(order.getOrderLines().stream()
-                        .map(OrderLineDto::createFromEntity) // OrderLine 엔터티를 OrderLineDto로 변환
+                        .map(OrderLineDto::createFromEntity)
                         .collect(Collectors.toList()))
                 .build();
     }
 
     public int calculateTotal() {
-        int total = 0;
-
-        for (OrderLineDto orderLineDto : orderLines) {
-            total += orderLineDto.calculateSubtotal();
-        }
-        return total;
+        return orderLines.stream().mapToInt(OrderLineDto::calculateSubtotal).sum();
     }
 
 }

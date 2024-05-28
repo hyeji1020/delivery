@@ -38,9 +38,12 @@ public class Order {
     @JsonIgnore
     private Store store;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "order_id")
-    @JsonIgnore
+//    @OneToMany(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "order_id")
+//    @JsonIgnore
+//    private List<OrderLine> orderLines;
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderLine> orderLines;
 
     //총액
@@ -78,7 +81,6 @@ public class Order {
             orderStatus = status;
             return;
         }
-
         throw new IllegalStateException();
     }
 

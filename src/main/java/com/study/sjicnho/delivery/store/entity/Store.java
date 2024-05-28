@@ -41,7 +41,8 @@ public class Store {
     @JsonProperty("storeNumber")
     private String phoneNumber;
 
-    public Store(String name, String address, String phoneNumber) {
+    public Store(Integer storeId, String name, String address, String phoneNumber) {
+        this.storeId = storeId;
         this.name = name;
         this.address = address;
         this.phoneNumber = phoneNumber;

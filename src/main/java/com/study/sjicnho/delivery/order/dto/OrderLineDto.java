@@ -41,6 +41,10 @@ public class OrderLineDto {
                 .build();
     }
 
+
+
+
+
     // 소계 계산 메서드
     public int calculateSubtotal() {
         return this.quantity * this.unitPrice;
