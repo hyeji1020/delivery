@@ -1,4 +1,4 @@
-package com.study.sjicnho.service;
+package com.study.sjicnho.delivery.food.service;
 
 import com.study.sjicnho.delivery.food.entity.Food;
 import com.study.sjicnho.delivery.food.repository.FoodJpaRepository;

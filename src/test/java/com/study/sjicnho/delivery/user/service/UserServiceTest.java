@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.Arrays;
@@ -59,7 +60,7 @@ class UserServiceTest {
     }
 
     @Test
-    @DisplayName("회원가입 중복 이메일 테스트")
+    @DisplayName("회원가입 이메일 중복 테스트")
     void testSignUp_EmailAlreadyExists() {
         // Given
         UserDto userDto = new UserDto(1, "홍길동", "user1234@naver.com", "Password123!", UserRole.CUSTOMER);
@@ -71,7 +72,7 @@ class UserServiceTest {
     }
 
     @Test
-    @DisplayName("회원 정보 모두 가져오기 성공")
+    @DisplayName("회원 리스트 조회 성공")
     void testGetAll_Success() {
         // Given
         User user1 = new User(1, "홍길동", "user1234@naver.com", "Password123!", UserRole.CUSTOMER);
@@ -102,7 +103,7 @@ class UserServiceTest {
     }
 
     @Test
-    @DisplayName("Id 값으로 회원 정보 가져오기 성공")
+    @DisplayName("회원 정보 조회 성공")
     void testGetById_Success() {
         // Given
         User user = new User(1, "홍길동", "user1234@naver.com", "Password123!", UserRole.CUSTOMER);
@@ -123,7 +124,7 @@ class UserServiceTest {
     }
 
     @Test
-    @DisplayName("회원 정보 가져오기 실패")
+    @DisplayName("회원 정보 조회 실패")
     void testGetById_UserNotFound() {
         // Given
         when(userRepository.findById(1)).thenReturn(Optional.empty());
@@ -140,12 +141,7 @@ class UserServiceTest {
     void testUpdate_Success() {
         // Given
         User existingUser =  new User(1, "홍길동", "user1234@naver.com", "Password123!", UserRole.CUSTOMER);
-
-        UserDto updateDto = new UserDto();
-        updateDto.setEmail("updated@example.com");
-        updateDto.setPassword("newPassword!");
-        updateDto.setName("홍수정");
-        updateDto.setUserRole(UserRole.CUSTOMER);
+        UserDto updateDto = new UserDto(1, "홍수정", "updated@example.com", "newPassword!", UserRole.CUSTOMER);
 
         when(userRepository.findById(1)).thenReturn(Optional.of(existingUser));
 
