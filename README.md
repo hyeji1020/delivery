@@ -1,38 +1,58 @@
-## 배달 API
-배달어플의 기능을 구현한 배달 REST API 개인 프로젝트입니다.
+<div align="center">
+    
+### 🛵 delivery 🛵
+배달어플의 기능을 구현한 배달 REST API 개인 프로젝트입니다
 
+### 📌 서비스 개요
+사용자 중심의 접근 방식을 통해 유명 배달 어플리케이션의 주요 기능을 REST API로 구현한 개인 프로젝트입니다. <br>
+이 프로젝트는 **이커머스 플랫폼**에서 필수적인 **상품 관리, 주문 처리, 결제, 사용자 인증** 등의<br>
+핵심 기능을 배달 서비스 관점에서 설계 및 개발하는 데 중점을 두었습니다.
 
-## 📺 skills
-<img src="https://img.shields.io/badge/java-007396?style=flat&logo=OpenJDK&logoColor=white"> <img src="https://img.shields.io/badge/SpringBoot-6DB33F?style=flat&logo=springboot&logoColor=white"/>
-<img src="https://img.shields.io/badge/SpringSecurity-6DB33F?style=flat&logo=springsecurity&logoColor=white"/>
-<img src="https://img.shields.io/badge/MySQL-4479A1?style=flat&logo=mysql&logoColor=white"/>
+### 🛠️ 기술 스택
+![Java](https://img.shields.io/badge/Java-18-blue?logo=openjdk&logoColor=white)       
+![Spring Boot](https://img.shields.io/badge/Spring%20Boot-2.7.1-brightgreen?logo=springboot) 
+![JPA](https://img.shields.io/badge/JPA-ORM-orange)                                  
+![Spring Security](https://img.shields.io/badge/Spring%20Security-auth-green?logo=springsecurity) 
+![MySQL](https://img.shields.io/badge/MySQL-8.0.32-blue?logo=mysql&logoColor=white)  
 <img src="https://img.shields.io/badge/Gradle-02303A?style=flat&logo=gradle&logoColor=white"/>
-<img src="https://img.shields.io/badge/Postman-FF6C37?style=flat&logo=postman&logoColor=white"/>
 <img src="https://img.shields.io/badge/IntelliJ-A100FF?style=flat&logo=intellijidea&logoColor=white"/>
+<img src="https://img.shields.io/badge/Postman-FF6C37?style=flat&logo=postman&logoColor=white"/>
+
+### ⏰ 개발 기간
+2024-03 ~ 2024-03(4주)
+
+</div>
 
 ## 구현 기능
-1. 회원가입
-* 이름, 이메일(아이디), 비밀번호, 권한(OWNER, CUSTOMER)
+**1. 회원가입**
+* 사용자 정보를 입력하여 계정을 생성 (이름, 이메일, 비밀번호)
+* 회원 권한 설정:
+     * **OWNER**: 판매자
+     * **CUSTOMER**: 사용자
      
-2. 로그인
-* JWT 토큰으로 권한 인증, 인가
-* 토큰 활용하여 권한에 따라 접근
+**2. 로그인**
+* **JWT 토큰**을 활용하여 사용자 인증 및 인가를 구현
+* 권한(OWNER, CUSTOMER)에 따라 접근 가능한 API를 분리하여 보안 강화
 
-3. 주문
-* 한 가게에서만 여러개 음식 주문 가능
-* 주문 수량에 따른 소계 합, 총합 계산
+**3. 주문 처리**
+* 한 가게에서 여러 개의 음식 주문 가능
+  - 사용자 주문 시, 주문 수량에 따른 소계 및 **총합 자동 계산**.
+* 주문 상태 관리
+  - 초기 상태: ACCEPTING(Default)
+  - 사용자는 주문 상태를 CANCEL(취소)로 변경 가능
   
-### OWNER(판매자)
-* 음식, 가게 등록
-* 주문 접수 들어왔을 때
-  - ACCEPTED(수락) or REJECT(거절) 가능
+4. **OWNER(판매자)**
+* 음식 및 가게 등록, 수정 기능 제공
+* **주문 관리**
+  - 판매자는 접수된 주문을 확인하고, 상태를 다음과 같이 변경 가능
+     - **ACCEPTED**: 주문 수락
+     - **REJECT**: 주문 거절
   
-  
-### CUSTOMER(사용자)
-* 가게, 음식 조회하여 주문
-* 주문 접수
-  - 가게, 음식 종류, 음식 수량 으로 주문
-  - 주문 상태 현황 : ACCEPTING(Default) or CANCEL(취소) 가능
+5. **CUSTOMER(사용자)**
+* **가게 및 음식 조회**
+* **주문 생성**
+  - 음식 종류, 수량, 가게를 선택하여 주문 생성
+  - 주문 진행 상태를 실시간으로 확인 가능(예: ACCEPTING, CANCEL)
 
 
 
